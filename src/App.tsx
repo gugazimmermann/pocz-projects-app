@@ -1,29 +1,91 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { lazy, ReactElement, Suspense } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { AuthRoutes } from './routes';
+import Loading from './components/loading/Loading';
+import AuthLayout from './pages/auth/pages/layout/Layout';
+import SignIn from './pages/auth/pages/sign-in/SignIn';
 
-function App() {
+const ForgotPassword = lazy(
+  () => import('./pages/auth/pages/forgot-password/ForgotPassword'),
+);
+const ChangePassword = lazy(
+  () => import('./pages/auth/pages/change-password/ChangePassword'),
+);
+const SignUp = lazy(() => import('./pages/auth/pages/sign-up/SignUp'));
+const Plans = lazy(() => import('./pages/auth/pages/plans/Plans'));
+const Subscription = lazy(
+  () => import('./pages/auth/pages/subscription/Subscription'),
+);
+
+function App(): ReactElement {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.tsx</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<Loading />}>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <AuthLayout>
+              <SignIn />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={AuthRoutes.SignIn}
+          render={() => (
+            <AuthLayout>
+              <SignIn />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={AuthRoutes.ForgotPassword}
+          render={() => (
+            <AuthLayout>
+              <ForgotPassword />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={`${AuthRoutes.ChangePassword}/:urlcode?`}
+          render={() => (
+            <AuthLayout>
+              <ChangePassword />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={AuthRoutes.SignUp}
+          render={() => (
+            <AuthLayout>
+              <SignUp />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={AuthRoutes.Plans}
+          render={() => (
+            <AuthLayout>
+              <Plans />
+            </AuthLayout>
+          )}
+        />
+        <Route
+          exact
+          path={AuthRoutes.Subscription}
+          render={() => (
+            <AuthLayout>
+              <Subscription />
+            </AuthLayout>
+          )}
+        />
+      </Switch>
+    </Suspense>
   );
 }
 

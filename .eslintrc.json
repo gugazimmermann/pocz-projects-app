@@ -47,7 +47,20 @@
     "jest/valid-expect": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "no-unused-vars": "off",
-    "react/no-array-index-key": "off"
+    "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }],
+    "jsx-a11y/label-has-for": ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      }
+    }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "settings": {
     "import/resolver": {
