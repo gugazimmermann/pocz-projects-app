@@ -45,18 +45,8 @@ export function SignUp() {
       setLoading(false);
       return;
     }
-    try {
-      setLoading(false);
-      history.push(AuthRoutes.Plans, { form });
-    } catch (err: any) {
-      setShowAlert({
-        show: true,
-        message: err.message as string,
-        type: WARNING_TYPES.ERROR,
-        time: 3000,
-      });
-      setLoading(false);
-    }
+    setLoading(false);
+    history.push(AuthRoutes.Plans, { form });
   };
 
   return (
@@ -152,7 +142,7 @@ export function SignUp() {
           />
         </form>
       </section>
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV !== 'production' && (
         <div className="mt-6 text-gray-400">MercadoPago Email: test_user_82166921@testuser.com</div>
       )}
     </main>

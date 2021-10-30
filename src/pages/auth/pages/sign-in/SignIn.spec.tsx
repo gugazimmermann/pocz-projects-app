@@ -9,13 +9,8 @@ import SignIn from './SignIn';
 faker.locale = 'pt_BR';
 
 describe('SignIn', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(
-      <MemoryRouter>
-        <SignIn />
-      </MemoryRouter>,
-    );
-    expect(baseElement).toBeTruthy();
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it('should have Entre em seu escritório as the title', () => {
@@ -64,7 +59,6 @@ describe('SignIn', () => {
     );
     expect(useLocationSpy).toHaveBeenCalled();
     expect(getByText('Senha alterada com sucesso!')).toBeTruthy();
-    useLocationSpy.mockRestore();
   });
 
   it('should show signup success alert', async () => {
@@ -88,19 +82,38 @@ describe('SignIn', () => {
     );
     expect(useLocationSpy).toHaveBeenCalled();
     expect(getByText('Cadastro realizado com sucesso!')).toBeTruthy();
-    useLocationSpy.mockRestore();
+  });
+
+  it('should show invite accepted alert', async () => {
+    const mockLocation = {
+      pathname: '/',
+      key: '',
+      search: '',
+      hash: '',
+      state: {
+        inviteaccepted: true,
+      },
+    };
+    const useLocationSpy = jest
+      .spyOn(routeData, 'useLocation')
+      .mockReturnValue(mockLocation);
+    const { getByText } = render(
+      <MemoryRouter>
+        <SignIn />
+      </MemoryRouter>,
+    );
+    expect(useLocationSpy).toHaveBeenCalled();
+    expect(getByText('Convite Aceito!')).toBeTruthy();
   });
 
   it('should not submit when email is invalid', async () => {
-    const signinSpy = jest.spyOn(auth, 'signin').mockReturnValue(
-      Promise.resolve({
-        auth: true,
-        status: faker.datatype.string(),
-        accessToken: faker.datatype.string(),
-        refreshToken: faker.datatype.string(),
-        tenant: faker.datatype.uuid(),
-      }),
-    );
+    const signinSpy = jest.spyOn(auth, 'signin').mockResolvedValueOnce({
+      auth: true,
+      status: faker.datatype.string(),
+      accessToken: faker.datatype.string(),
+      refreshToken: faker.datatype.string(),
+      tenant: faker.datatype.uuid(),
+    });
     const { container, getByText } = render(
       <MemoryRouter>
         <SignIn />
@@ -114,19 +127,12 @@ describe('SignIn', () => {
     await waitFor(() => fireEvent.click(button));
     await waitFor(() => expect(signinSpy).toHaveBeenCalledTimes(0));
     await waitFor(() => expect(getByText('Email inválido!')).toBeTruthy());
-    signinSpy.mockRestore();
   });
 
-  it('should submit', async () => {
+  it('should be a error on submit', async () => {
     const signinSpy = jest
       .spyOn(auth, 'signin')
-      .mockReturnValue(Promise.resolve({
-        auth: true,
-        status: faker.datatype.string(),
-        accessToken: faker.datatype.string(),
-        refreshToken: faker.datatype.string(),
-        tenant: faker.datatype.uuid(),
-      }));
+      .mockRejectedValueOnce(new Error('Error Msg'));
     const { container, getByText } = render(
       <MemoryRouter>
         <SignIn />
@@ -143,6 +149,31 @@ describe('SignIn', () => {
       email: 'test@test.com',
       password: '123456',
     }));
-    signinSpy.mockRestore();
+  });
+
+  it('should submit', async () => {
+    const signinSpy = jest.spyOn(auth, 'signin').mockResolvedValueOnce({
+      auth: true,
+      status: faker.datatype.string(),
+      accessToken: faker.datatype.string(),
+      refreshToken: faker.datatype.string(),
+      tenant: faker.datatype.uuid(),
+    });
+    const { container, getByText } = render(
+      <MemoryRouter>
+        <SignIn />
+      </MemoryRouter>,
+    );
+    const email = container.querySelector('input[id="email"]') as Element;
+    const password = container.querySelector('input[id="password"]') as Element;
+    await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
+    await waitFor(() => fireEvent.input(password, { target: { value: '123456' } }));
+    const button = getByText('Entrar');
+    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => expect(signinSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(signinSpy).toHaveBeenCalledWith({
+      email: 'test@test.com',
+      password: '123456',
+    }));
   });
 });

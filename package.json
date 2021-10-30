@@ -17,8 +17,9 @@
       "src/libs/**/*.{js,ts,tsx}",
       "src/pages/**/*.{js,ts,tsx}",
       "src/services/**/*.{js,ts,tsx}",
-      "!src/pages/auth/pages/subscription/protocols/*.{js,ts,tsx}",
+      "!src/pages/auth/pages/subscription/**/*.{js,ts,tsx}",
       "!src/pages/auth/pages/plans/features/**/*.{js,ts,tsx}",
+      "!src/pages/layout/context/**/*.{js,ts,tsx}",
       "!src/**/index.ts",
       "!<rootDir>/node_modules/"
     ]
@@ -49,6 +50,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/faker": "^5.5.9",
+    "@types/history": "^4.7.9",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
@@ -68,6 +70,7 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/luxon": "^2.0.5",
+    "@types/mercadopago": "^1.5.5",
     "@types/react-router-dom": "^5.3.2",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",

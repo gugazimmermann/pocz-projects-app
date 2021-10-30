@@ -77,6 +77,7 @@ export type Mercadopago = {
 }
 
 export type MercadoPago = {
+    new(key: string, options: { locale: string }): MercadoPago;
     cardForm: (e: any) => any
     checkout: (e: any) => any
     constructor: (key: string, options: { locale: string }) => any

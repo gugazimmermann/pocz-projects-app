@@ -23,7 +23,7 @@ export interface IPlan {
   initPoint?: string;
   frequency?: number;
   frequencyType?: string;
-  transactionAmount?: number;
+  transactionAmount: number;
   currencyId?: string;
   type?: string;
   updatedAt?: string;

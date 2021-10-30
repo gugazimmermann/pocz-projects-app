@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useLocation, Redirect } from 'react-router-dom';
-import { AlertInterface, Alert } from '../../../../components';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import { PlanProfessionalIcon, PlanBasicIcon } from '../../../../icons';
 import { SignUpForm } from '../../../../interfaces/auth';
 import { IPlan } from '../../../../interfaces/subscriptions';
-import { showPlanPeriod, WARNING_TYPES } from '../../../../libs';
+import { showPlanPeriod } from '../../../../libs';
 import { AuthRoutes } from '../../../../routes';
 import { SubscriptionsServices, AuthServices } from '../../../../services';
 import { Title } from '../../components';
@@ -15,38 +14,23 @@ interface State {
 }
 
 export function Plans() {
-  const history = useHistory();
   const location = useLocation();
+  const history = useHistory();
   const state = location?.state as State;
   const form = state?.form;
-  const [showAlert, setShowAlert] = useState<AlertInterface>({
-    show: false,
-    message: '',
-    type: WARNING_TYPES.NONE,
-    time: 3000,
-  });
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [plan, setPlan] = useState<IPlan>();
   const [selectedPlan, setSelectedPlan] = useState('');
 
-  useEffect(() => {
-    async function getPlans() {
-      try {
-        const data = (await SubscriptionsServices.getPlans()) as IPlan[];
-        const freePlan = data.find((p) => p.transactionAmount === 0);
-        setSelectedPlan(freePlan?.id || '');
-        setPlan(freePlan);
-        setPlans(data);
-      } catch (err: any) {
-        setShowAlert({
-          show: true,
-          message: err.message as string,
-          type: WARNING_TYPES.ERROR,
-          time: 3000,
-        });
-      }
-    }
+  async function getPlans() {
+    const data = (await SubscriptionsServices.getPlans()) as IPlan[];
+    const freePlan = data.find((p) => p.transactionAmount === 0);
+    setSelectedPlan(freePlan?.id as string);
+    setPlan(freePlan);
+    setPlans(data);
+  }
 
+  useEffect(() => {
     getPlans();
   }, []);
 
@@ -89,42 +73,29 @@ export function Plans() {
         </div>
       );
     }
-    if ((p?.reason as string).toLowerCase().includes('gratuito')) {
-      return (
-        <div className="flex flex-col items-center justify-center text-center">
-          <p className="mt-4 text-sm font-bold text-red-600">
-            Período de testes de 15 dias!
-          </p>
-          <p className="mt-2 text-sm text-gray-600">
-            O plano pode ser alterado posteriormente para Básico ou
-            Profissional.
-          </p>
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div className="flex flex-col items-center justify-center text-center">
+        <p className="mt-4 text-sm font-bold text-red-600">
+          Período de testes de 15 dias!
+        </p>
+        <p className="mt-2 text-sm text-gray-600">
+          O plano pode ser alterado posteriormente para Básico ou Profissional.
+        </p>
+      </div>
+    );
   }
 
   async function handleFoward() {
     if (plan?.transactionAmount !== 0) {
       history.push(AuthRoutes.Subscription, { form, plan });
     } else {
-      try {
-        await AuthServices.signup({
-          name: form.name,
-          email: form.email,
-          password: form.password,
-          planId: plan.id as string,
-        });
-        history.push(AuthRoutes.SignIn, { email: form.email });
-      } catch (err: any) {
-        setShowAlert({
-          show: true,
-          message: err.message as string,
-          type: WARNING_TYPES.ERROR,
-          time: 3000,
-        });
-      }
+      await AuthServices.signup({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        planId: plan.id as string,
+      });
+      history.push(AuthRoutes.SignIn, { email: form.email });
     }
   }
 
@@ -134,7 +105,6 @@ export function Plans() {
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
       <Title title="Selecione seu Plano" />
-      {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section>
         <form className="flex flex-col">
           <div className="mb-2 rounded">

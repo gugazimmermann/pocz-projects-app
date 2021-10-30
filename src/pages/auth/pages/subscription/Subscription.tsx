@@ -15,9 +15,10 @@ import {
   CardToken,
 } from './protocols';
 
-const PUBLIC_KEY = process.env.NX_STAGE === 'dev'
-  ? process.env.NX_MERCADOPAGO_PUBLIC_KEY_TEST
-  : process.env.NX_MERCADOPAGO_PUBLIC_KEY;
+const PUBLIC_KEY = process.env.NODE_ENV !== 'production'
+  ? process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY_TEST
+  : process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY;
+
 interface Constructable<T> {
   new (key: string, options?: { locale: string }): T;
 }
@@ -35,7 +36,9 @@ export function Subscription() {
     form: SignUpForm;
     plan: IPlan;
   };
-  const { form, plan } = state;
+  const form = state?.form || undefined;
+  const plan = state?.plan || undefined;
+
   const {
     register,
     handleSubmit,
@@ -311,7 +314,7 @@ export function Subscription() {
           />
         </form>
       </section>
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV !== 'production' && (
         <div className="mt-6 text-gray-400">
           Titular: APRO
           <br />

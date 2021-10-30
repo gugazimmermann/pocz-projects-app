@@ -7,7 +7,7 @@ export function SignupLink() {
       <p className="text-white">
         Não tem uma conta?
         {' '}
-        <Link to={AuthRoutes.SignUp}>
+        <Link to={AuthRoutes.SignUp} data-testid="signupLinkId">
           <span className="font-bold hover:underline">Cadastrar</span>
           .
         </Link>
