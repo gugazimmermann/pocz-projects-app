@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Alert, AlertInterface, LoadingButton } from '../../../../components';
-import { ForgotPasswordForm } from '../../../../interfaces/auth';
+import { ForgotPasswordForm, ForgotPasswordRes } from '../../../../interfaces/auth';
 import { WARNING_TYPES, validateEmail } from '../../../../libs';
 import { AuthServices } from '../../../../services';
 import { AuthLink, Title } from '../../components';
@@ -36,14 +36,12 @@ export function ForgotPassword() {
       return;
     }
     try {
-      const res = await AuthServices.forgotpassword({ email: form.email });
-      if ('email' in res) {
-        setLoading(false);
-        history.push(AuthRoutes.ChangePassword, {
-          email: res.email,
-          date: res.date,
-        });
-      }
+      const res = await AuthServices.forgotpassword({ email: form.email }) as ForgotPasswordRes;
+      setLoading(false);
+      history.push(AuthRoutes.ChangePassword, {
+        email: res.email,
+        date: res.date,
+      });
     } catch (err: any) {
       setShowAlert({
         show: true,

@@ -6,10 +6,9 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import faker from 'faker';
 import userEvent from '@testing-library/user-event';
-import * as subscriptions from '../../../../services/subscriptions/subscriptions';
-import * as auth from '../../../../services/auth/auth';
-import Plans from './Plans';
+import { AuthServices, SubscriptionsServices } from '../../../../services';
 import { AuthRoutes } from '../../../../routes';
+import Plans from './Plans';
 
 faker.locale = 'pt_BR';
 
@@ -76,21 +75,19 @@ describe('Plans', () => {
   it('should receive all plans and call handleFoward', async () => {
     jest.spyOn(routeData, 'useLocation').mockReturnValue(mockLocation);
     const subscriptionsSpy = jest
-      .spyOn(subscriptions, 'getPlans')
+      .spyOn(SubscriptionsServices, 'getPlans')
       .mockResolvedValueOnce(getPlans);
     const authSpy = jest
-      .spyOn(auth, 'signup')
+      .spyOn(AuthServices, 'signup')
       .mockResolvedValueOnce({ message: 'ok' });
-    const { getByText } = render(
+    const { getByText, getByRole, getAllByRole } = render(
       <Router history={history}>
         <Plans />
       </Router>,
     );
     await waitFor(() => expect(subscriptionsSpy).toHaveBeenCalledTimes(1));
-    const options = screen.getAllByRole('option');
-    const button = getByText('Avançar');
-
-    userEvent.selectOptions(screen.getByRole('combobox'), [getPlans[0].id], {
+    const options = getAllByRole('option');
+    userEvent.selectOptions(getByRole('combobox'), [getPlans[0].id], {
       bubbles: true,
     });
     expect((options[0] as HTMLOptionElement).selected).toBeTruthy();
@@ -104,7 +101,7 @@ describe('Plans', () => {
     expect((options[1] as HTMLOptionElement).selected).toBeTruthy();
     expect((options[2] as HTMLOptionElement).selected).toBeFalsy();
 
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
     expect(history.location.pathname).toBe(AuthRoutes.Subscription);
 
     userEvent.selectOptions(screen.getByRole('combobox'), [getPlans[2].id], {
@@ -114,7 +111,7 @@ describe('Plans', () => {
     expect((options[1] as HTMLOptionElement).selected).toBeFalsy();
     expect((options[2] as HTMLOptionElement).selected).toBeTruthy();
 
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
     await waitFor(() => expect(authSpy).toHaveBeenCalledTimes(1));
     expect(history.location.pathname).toBe(AuthRoutes.SignIn);
   });

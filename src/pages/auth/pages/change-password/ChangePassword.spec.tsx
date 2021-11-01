@@ -1,10 +1,10 @@
 import {
-  fireEvent, render, screen, waitFor,
+  fireEvent, render, waitFor,
 } from '@testing-library/react';
 import routeData, { MemoryRouter } from 'react-router';
-import * as auth from '../../../../services/auth/auth';
-import ChangePassword from './ChangePassword';
+import { AuthServices } from '../../../../services';
 import { AuthRoutes } from '../../../../routes';
+import ChangePassword from './ChangePassword';
 
 describe('ChangePassword', () => {
   afterEach(() => {
@@ -21,41 +21,37 @@ describe('ChangePassword', () => {
   });
 
   it('should change input class on missing field', async () => {
-    render(
+    const { getByLabelText, getByText } = render(
       <MemoryRouter>
         <ChangePassword />
       </MemoryRouter>,
     );
-
-    const inputNode = screen.getByLabelText('Nova Senha');
-    expect(inputNode.className.split(' ')).toContain(
+    expect(getByLabelText('Nova Senha').className.split(' ')).toContain(
       'focus:border-primary-600',
     );
-    const button = screen.getByText('Alterar Senha');
-    await waitFor(() => fireEvent.click(button));
-    expect(inputNode.className.split(' ')).toContain('border-red-600');
+    await waitFor(() => fireEvent.click(getByText('Alterar Senha')));
+    expect(getByLabelText('Nova Senha').className.split(' ')).toContain('border-red-600');
   });
 
   it('should have showInfo alert', async () => {
-    const mockLocation = {
-      pathname: '/',
-      key: '',
-      search: '',
-      hash: '',
-      state: {
-        email: 'test@test.com',
-        date: '01/01/2000 01:01:01',
-      },
-    };
     const useLocationSpy = jest
       .spyOn(routeData, 'useLocation')
-      .mockReturnValue(mockLocation);
+      .mockReturnValue({
+        pathname: '/',
+        key: '',
+        search: '',
+        hash: '',
+        state: {
+          email: 'test@test.com',
+          date: '01/01/2000 01:01:01',
+        },
+      });
     const { getByText } = render(
       <MemoryRouter>
         <ChangePassword />
       </MemoryRouter>,
     );
-    expect(useLocationSpy).toHaveBeenCalled();
+    expect(useLocationSpy).toHaveBeenCalledTimes(1);
     expect(getByText('test@test.com')).toBeTruthy();
   });
 
@@ -64,7 +60,7 @@ describe('ChangePassword', () => {
       .spyOn(routeData, 'useParams')
       .mockReturnValue({ urlcode: '123' });
     const getPasswordCodeSpy = jest
-      .spyOn(auth, 'getforgotpasswordcode')
+      .spyOn(AuthServices, 'getforgotpasswordcode')
       .mockResolvedValueOnce({ code: '123' });
     render(
       <MemoryRouter
@@ -73,15 +69,15 @@ describe('ChangePassword', () => {
         <ChangePassword />
       </MemoryRouter>,
     );
-    expect(getPasswordCodeSpy).toHaveBeenCalled();
+    expect(getPasswordCodeSpy).toHaveBeenCalledWith({ codeurl: '123' });
   });
 
   it('should throw error when get code from param', async () => {
     jest
       .spyOn(routeData, 'useParams')
       .mockReturnValue({ urlcode: '123' });
-    const getPasswordCodeSpy = jest
-      .spyOn(auth, 'getforgotpasswordcode')
+    jest
+      .spyOn(AuthServices, 'getforgotpasswordcode')
       .mockReturnValue(Promise.reject());
     const { getByText } = render(
       <MemoryRouter
@@ -90,7 +86,6 @@ describe('ChangePassword', () => {
         <ChangePassword />
       </MemoryRouter>,
     );
-    await waitFor(() => expect(getPasswordCodeSpy).toHaveBeenCalled());
     await waitFor(() => expect(
       getByText('Não foi possível recuperar o código, verifique seu email.'),
     ).toBeTruthy());
@@ -98,7 +93,7 @@ describe('ChangePassword', () => {
 
   it('should not submit when password are not equal', async () => {
     const changepasswordSpy = jest
-      .spyOn(auth, 'changepassword');
+      .spyOn(AuthServices, 'changepassword');
     const { container, getByText } = render(
       <MemoryRouter>
         <ChangePassword />
@@ -114,14 +109,13 @@ describe('ChangePassword', () => {
     await waitFor(() => fireEvent.input(code, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(newpassword, { target: { value: '456' } }));
     await waitFor(() => fireEvent.input(repeatnewpassword, { target: { value: '789' } }));
-    const button = getByText('Alterar Senha');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Alterar Senha')));
     await waitFor(() => expect(changepasswordSpy).toHaveBeenCalledTimes(0));
     await waitFor(() => expect(getByText('Senhas são diferentes!')).toBeTruthy());
   });
 
   it('should submit and set alert error', async () => {
-    jest.spyOn(auth, 'changepassword').mockRejectedValueOnce({ message: 'Error Message' });
+    jest.spyOn(AuthServices, 'changepassword').mockRejectedValueOnce({ message: 'Error Message' });
     const { container, getByText } = render(
       <MemoryRouter>
         <ChangePassword />
@@ -137,8 +131,7 @@ describe('ChangePassword', () => {
     await waitFor(() => fireEvent.input(code, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(newpassword, { target: { value: '456' } }));
     await waitFor(() => fireEvent.input(repeatnewpassword, { target: { value: '456' } }));
-    const button = getByText('Alterar Senha');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Alterar Senha')));
     await waitFor(() => {
       expect(getByText('Error Message')).toBeTruthy();
     });
@@ -146,7 +139,7 @@ describe('ChangePassword', () => {
 
   it('should submit', async () => {
     const changepasswordSpy = jest
-      .spyOn(auth, 'changepassword')
+      .spyOn(AuthServices, 'changepassword')
       .mockResolvedValueOnce({ message: 'ok' });
     const { container, getByText } = render(
       <MemoryRouter>
@@ -163,8 +156,7 @@ describe('ChangePassword', () => {
     await waitFor(() => fireEvent.input(code, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(newpassword, { target: { value: '456' } }));
     await waitFor(() => fireEvent.input(repeatnewpassword, { target: { value: '456' } }));
-    const button = getByText('Alterar Senha');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Alterar Senha')));
     await waitFor(() => {
       expect(changepasswordSpy).toHaveBeenCalled();
       expect(changepasswordSpy).toHaveBeenCalledWith({ codeNumber: '123', password: '456' });

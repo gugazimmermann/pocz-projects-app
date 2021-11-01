@@ -1,8 +1,6 @@
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
-import * as auth from '../../../../services/auth/auth';
+import { AuthServices } from '../../../../services';
 import ForgotPassword from './ForgotPassword';
 
 describe('ForgotPassword', () => {
@@ -20,26 +18,23 @@ describe('ForgotPassword', () => {
   });
 
   it('should change input class on missing field', async () => {
-    render(
+    const { getByLabelText, getByText } = render(
       <MemoryRouter>
         <ForgotPassword />
       </MemoryRouter>,
     );
-
-    const inputNode = screen.getByLabelText('Email');
-    expect(
-      inputNode.className.split(' '),
-    ).toContain('focus:border-primary-600');
-    const button = screen.getByText('Enviar Código');
-    await waitFor(() => fireEvent.click(button));
-    expect(inputNode.className.split(' ')).toContain(
+    expect(getByLabelText('Email').className.split(' ')).toContain(
+      'focus:border-primary-600',
+    );
+    await waitFor(() => fireEvent.click(getByText('Enviar Código')));
+    expect(getByLabelText('Email').className.split(' ')).toContain(
       'border-red-600',
     );
   });
 
   it('should not submit when email are invalid', async () => {
     const forgotpasswordSpy = jest
-      .spyOn(auth, 'forgotpassword')
+      .spyOn(AuthServices, 'forgotpassword')
       .mockReturnValue(
         Promise.resolve({
           email: 'teste@teste.com',
@@ -53,14 +48,15 @@ describe('ForgotPassword', () => {
     );
     const email = container.querySelector('input[id="email"]') as Element;
     await waitFor(() => fireEvent.input(email, { target: { value: 'teste' } }));
-    const button = getByText('Enviar Código');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Enviar Código')));
     await waitFor(() => expect(forgotpasswordSpy).toHaveBeenCalledTimes(0));
     await waitFor(() => expect(getByText('Email inválido!')).toBeTruthy());
   });
 
   it('should submit and set alert error', async () => {
-    jest.spyOn(auth, 'forgotpassword').mockRejectedValueOnce({ message: 'Error Message' });
+    jest
+      .spyOn(AuthServices, 'forgotpassword')
+      .mockRejectedValueOnce({ message: 'Error Message' });
     const { container, getByText } = render(
       <MemoryRouter>
         <ForgotPassword />
@@ -68,8 +64,7 @@ describe('ForgotPassword', () => {
     );
     const email = container.querySelector('input[id="email"]') as Element;
     await waitFor(() => fireEvent.input(email, { target: { value: 'teste@test.com' } }));
-    const button = getByText('Enviar Código');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Enviar Código')));
     await waitFor(() => {
       expect(getByText('Error Message')).toBeTruthy();
     });
@@ -77,7 +72,7 @@ describe('ForgotPassword', () => {
 
   it('should submit', async () => {
     const forgotpasswordSpy = jest
-      .spyOn(auth, 'forgotpassword')
+      .spyOn(AuthServices, 'forgotpassword')
       .mockReturnValue(
         Promise.resolve({
           email: 'teste@teste.com',
@@ -91,11 +86,12 @@ describe('ForgotPassword', () => {
     );
     const email = container.querySelector('input[id="email"]') as Element;
     await waitFor(() => fireEvent.input(email, { target: { value: 'teste@test.com' } }));
-    const button = getByText('Enviar Código');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Enviar Código')));
     await waitFor(() => {
-      expect(forgotpasswordSpy).toHaveBeenCalled();
-      expect(forgotpasswordSpy).toHaveBeenCalledWith({ email: 'teste@test.com' });
+      expect(forgotpasswordSpy).toHaveBeenCalledTimes(1);
+      expect(forgotpasswordSpy).toHaveBeenCalledWith({
+        email: 'teste@test.com',
+      });
     });
   });
 });

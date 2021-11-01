@@ -1,13 +1,13 @@
 import {
-  fireEvent, render, screen, waitFor,
+  fireEvent, render, waitFor,
 } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import faker from 'faker';
-import * as auth from '../../../../services/auth/auth';
-import SignUp from './SignUp';
+import { AuthServices } from '../../../../services';
 import { AuthRoutes } from '../../../../routes';
+import SignUp from './SignUp';
 
 faker.locale = 'pt_BR';
 
@@ -26,31 +26,26 @@ describe('SignUp', () => {
   });
 
   it('should change input class on missing field', async () => {
-    render(
+    const { getByLabelText, getByText } = render(
       <MemoryRouter>
         <SignUp />
       </MemoryRouter>,
     );
-    const nome = screen.getByLabelText('Nome');
-    expect(nome.className.split(' ')).toContain('focus:border-primary-600');
-    const email = screen.getByLabelText('Email');
-    expect(email.className.split(' ')).toContain('focus:border-primary-600');
-    const password = screen.getByLabelText('Senha');
-    expect(password.className.split(' ')).toContain('focus:border-primary-600');
-    const repeatPassword = screen.getByLabelText('Repita a Senha');
-    expect(repeatPassword.className.split(' ')).toContain(
+    expect(getByLabelText('Nome').className.split(' ')).toContain('focus:border-primary-600');
+    expect(getByLabelText('Email').className.split(' ')).toContain('focus:border-primary-600');
+    expect(getByLabelText('Senha').className.split(' ')).toContain('focus:border-primary-600');
+    expect(getByLabelText('Repita a Senha').className.split(' ')).toContain(
       'focus:border-primary-600',
     );
-    const button = screen.getByText('Avançar');
-    await waitFor(() => fireEvent.click(button));
-    expect(nome.className.split(' ')).toContain('border-red-600');
-    expect(email.className.split(' ')).toContain('border-red-600');
-    expect(password.className.split(' ')).toContain('border-red-600');
-    expect(repeatPassword.className.split(' ')).toContain('border-red-600');
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
+    expect(getByLabelText('Nome').className.split(' ')).toContain('border-red-600');
+    expect(getByLabelText('Email').className.split(' ')).toContain('border-red-600');
+    expect(getByLabelText('Senha').className.split(' ')).toContain('border-red-600');
+    expect(getByLabelText('Repita a Senha').className.split(' ')).toContain('border-red-600');
   });
 
   it('should not submit when email are invalid', async () => {
-    const signupSpy = jest.spyOn(auth, 'signup').mockResolvedValueOnce({
+    const signupSpy = jest.spyOn(AuthServices, 'signup').mockResolvedValueOnce({
       message: 'ok',
     });
     const { container, getByText } = render(
@@ -68,14 +63,13 @@ describe('SignUp', () => {
     await waitFor(() => fireEvent.input(email, { target: { value: 'teste' } }));
     await waitFor(() => fireEvent.input(password, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(repeatPassword, { target: { value: '123' } }));
-    const button = getByText('Avançar');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
     await waitFor(() => expect(signupSpy).toHaveBeenCalledTimes(0));
     await waitFor(() => expect(getByText('Email inválido!')).toBeTruthy());
   });
 
   it('should not submit when password are not equal', async () => {
-    const signupSpy = jest.spyOn(auth, 'signup').mockResolvedValueOnce({
+    const signupSpy = jest.spyOn(AuthServices, 'signup').mockResolvedValueOnce({
       message: 'ok',
     });
     const { container, getByText } = render(
@@ -93,8 +87,7 @@ describe('SignUp', () => {
     await waitFor(() => fireEvent.input(email, { target: { value: 'teste@teste.com' } }));
     await waitFor(() => fireEvent.input(password, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(repeatPassword, { target: { value: '456' } }));
-    const button = getByText('Avançar');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
     await waitFor(() => expect(signupSpy).toHaveBeenCalledTimes(0));
     await waitFor(() => expect(getByText('Senhas são diferentes!')).toBeTruthy());
   });
@@ -116,8 +109,7 @@ describe('SignUp', () => {
     await waitFor(() => fireEvent.input(email, { target: { value: 'test@test.com' } }));
     await waitFor(() => fireEvent.input(password, { target: { value: '123' } }));
     await waitFor(() => fireEvent.input(repeatPassword, { target: { value: '123' } }));
-    const button = getByText('Avançar');
-    await waitFor(() => fireEvent.click(button));
+    await waitFor(() => fireEvent.click(getByText('Avançar')));
     expect(history.location.pathname).toBe(AuthRoutes.Plans);
   });
 });

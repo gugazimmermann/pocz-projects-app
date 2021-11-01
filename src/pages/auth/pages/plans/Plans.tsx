@@ -37,7 +37,7 @@ export function Plans() {
   function handleSelectPlan(id: string) {
     setSelectedPlan(id);
     const userPlan = plans.find((p) => p.id === id);
-    if (userPlan) setPlan(userPlan);
+    setPlan(userPlan);
   }
 
   function planIcon(p: IPlan | undefined) {
