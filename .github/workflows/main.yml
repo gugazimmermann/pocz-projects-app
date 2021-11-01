@@ -30,7 +30,6 @@ jobs:
           echo REACT_APP_BUCKET_FILES_URL=${{ secrets.REACT_APP_BUCKET_FILES_URL }} >> .env
           cat .env
       - run: yarn install
-      - run: yarn test --verbose --maxWorkers=2
       - run: yarn build
       - uses: jakejarvis/s3-sync-action@master
         with:

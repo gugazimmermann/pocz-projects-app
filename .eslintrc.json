@@ -61,7 +61,8 @@
     }],
     "@typescript-eslint/no-explicit-any": "off",
     "react/jsx-props-no-spreading": "off",
-    "no-useless-constructor": "off"
+    "no-useless-constructor": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
   "settings": {
     "import/resolver": {
