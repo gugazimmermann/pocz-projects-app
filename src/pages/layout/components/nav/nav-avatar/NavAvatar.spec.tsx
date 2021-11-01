@@ -1,7 +1,6 @@
 import faker from 'faker';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import NavAvatar from './NavAvatar';
@@ -121,7 +120,7 @@ describe('NavAvatar', () => {
       </Router>,
     );
     await waitFor(() => fireEvent.click(getByTestId('initialsId')));
-    userEvent.click(document.body);
+    await waitFor(() => fireEvent.mouseDown(document.body));
     expect(true).toBeTruthy();
   });
 
@@ -133,7 +132,7 @@ describe('NavAvatar', () => {
       </Router>,
     );
     await waitFor(() => fireEvent.click(getByAltText(profile.name)));
-    userEvent.click(document.body);
+    await waitFor(() => fireEvent.mouseDown(document.body));
     expect(true).toBeTruthy();
   });
 });
