@@ -1,0 +1,43 @@
+name: Production Build
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: Create env file
+        run: |
+          touch .env
+          echo REACT_APP_PROJECT_NAME=${{ secrets.REACT_APP_PROJECT_NAME }} >> .env
+          echo REACT_APP_PROJECT_WEBSITE_NAME=${{ secrets.REACT_APP_PROJECT_WEBSITE_NAME }} >> .env
+          echo REACT_APP_PROJECT_WEB_URL=${{ secrets.REACT_APP_PROJECT_WEB_URL }} >> .env
+          echo REACT_APP_PROJECT_APP_URL=${{ secrets.REACT_APP_PROJECT_APP_URL }} >> .env
+          echo REACT_APP_PROJECT_API_URL=${{ secrets.REACT_APP_PROJECT_API_URL }} >> .env
+          echo REACT_APP_MERCADOPAGO_PUBLIC_KEY=${{ secrets.REACT_APP_MERCADOPAGO_PUBLIC_KEY }} >> .env
+          echo REACT_APP_MERCADOPAGO_PUBLIC_KEY_TEST=${{ secrets.REACT_APP_MERCADOPAGO_PUBLIC_KEY_TEST }} >> .env
+          echo REACT_APP_FREE_PLAN=${{ secrets.REACT_APP_FREE_PLAN }} >> .env
+          echo REACT_APP_BUCKET_AVATAR=${{ secrets.REACT_APP_BUCKET_AVATAR }} >> .env
+          echo REACT_APP_BUCKET_AVATAR_URL=${{ secrets.REACT_APP_BUCKET_AVATAR_URL }} >> .env
+          echo REACT_APP_BUCKET_FILES=${{ secrets.REACT_APP_BUCKET_FILES }} >> .env
+          echo REACT_APP_BUCKET_FILES_URL=${{ secrets.REACT_APP_BUCKET_FILES_URL }} >> .env
+          cat .env
+      - run: yarn install
+      - run: yarn test
+      - run: yarn build
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET_NAME }}
+          SOURCE_DIR: "build"
