@@ -1,8 +1,11 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import routeData, { MemoryRouter } from 'react-router';
 import faker from 'faker';
 import { AuthServices } from '../../../../services';
 import SignIn from './SignIn';
+
+configure({ asyncUtilTimeout: 5000 });
 
 faker.locale = 'pt_BR';
 

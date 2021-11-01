@@ -1,7 +1,10 @@
 import faker from 'faker';
 import { render, waitFor, fireEvent } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router-dom';
 import MenuItem from './MenuItem';
+
+configure({ asyncUtilTimeout: 5000 });
 
 faker.locale = 'pt_BR';
 

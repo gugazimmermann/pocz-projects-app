@@ -1,6 +1,9 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { WARNING_TYPES } from '../../libs';
 import Alert from './Alert';
+
+configure({ asyncUtilTimeout: 5000 });
 
 const alertObject = {
   show: true,

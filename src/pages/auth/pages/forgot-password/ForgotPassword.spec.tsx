@@ -1,7 +1,10 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router';
 import { AuthServices } from '../../../../services';
 import ForgotPassword from './ForgotPassword';
+
+configure({ asyncUtilTimeout: 5000 });
 
 describe('ForgotPassword', () => {
   afterEach(() => {

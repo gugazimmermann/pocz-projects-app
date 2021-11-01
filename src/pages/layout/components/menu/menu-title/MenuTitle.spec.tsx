@@ -1,10 +1,13 @@
 import {
   render, waitFor, fireEvent,
 } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import MenuTitle from './MenuTitle';
 import { AppRoutes } from '../../../../../routes';
+
+configure({ asyncUtilTimeout: 5000 });
 
 const projectName = process.env.REACT_APP_PROJECT_NAME || '';
 

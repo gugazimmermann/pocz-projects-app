@@ -1,6 +1,7 @@
 import {
   fireEvent, render, waitFor,
 } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { MemoryRouter } from 'react-router';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -8,6 +9,8 @@ import faker from 'faker';
 import { AuthServices } from '../../../../services';
 import { AuthRoutes } from '../../../../routes';
 import SignUp from './SignUp';
+
+configure({ asyncUtilTimeout: 5000 });
 
 faker.locale = 'pt_BR';
 

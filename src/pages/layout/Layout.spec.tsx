@@ -1,10 +1,13 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
 import { render, waitFor } from '@testing-library/react';
+import { configure } from '@testing-library/dom';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { PlacesServices, ProfilesServices } from '../../services';
 import Layout from './Layout';
+
+configure({ asyncUtilTimeout: 5000 });
 
 faker.locale = 'pt_BR';
 
