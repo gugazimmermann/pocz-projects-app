@@ -1,34 +1,34 @@
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { WARNING_TYPES } from '../../libs';
-import Alert, { AlertInterface } from './Alert';
+import Alert from './Alert';
 
-const alertObject: AlertInterface = {
+const alertObject = {
   show: true,
   message: 'Alert Text',
   type: WARNING_TYPES.ERROR,
   time: 3000,
 };
 
-let setShowAlert = jest.fn();
-
 describe('Alert', () => {
   afterEach(() => {
     jest.useRealTimers();
     jest.clearAllMocks();
   });
+
   it('renders "Alert Text" test', () => {
+    const setShowAlert = jest.fn();
     const alertObjectWithOutTime = {
       ...alertObject,
       time: undefined,
     };
-    render(<Alert alert={alertObjectWithOutTime} setAlert={setShowAlert} />);
-    const linkElement = screen.getByText(alertObject.message);
-    expect(linkElement).toBeInTheDocument();
+    const { getByText } = render(
+      <Alert alert={alertObjectWithOutTime} setAlert={setShowAlert} />,
+    );
+    expect(getByText(alertObject.message)).toBeInTheDocument();
   });
 
   it('setTimeout must have be called with 3000', () => {
+    const setShowAlert = jest.fn();
     jest.useFakeTimers();
     jest.spyOn(global, 'setTimeout');
     render(<Alert alert={alertObject} setAlert={setShowAlert} />);
@@ -40,8 +40,8 @@ describe('Alert', () => {
   });
 
   it('setShowAlert must have be called', () => {
+    const setShowAlert = jest.fn();
     jest.useFakeTimers();
-    setShowAlert = jest.fn();
     render(<Alert alert={alertObject} setAlert={setShowAlert} />);
     expect(setShowAlert).not.toHaveBeenCalled();
     jest.runAllTimers();
@@ -49,10 +49,11 @@ describe('Alert', () => {
   });
 
   it('click button must call setShowAlert', async () => {
-    setShowAlert = jest.fn();
-    render(<Alert alert={alertObject} setAlert={setShowAlert} />);
-    const btn = screen.getByText('Close');
-    await waitFor(() => fireEvent.click(btn));
+    const setShowAlert = jest.fn();
+    const { getByText } = render(
+      <Alert alert={alertObject} setAlert={setShowAlert} />,
+    );
+    await waitFor(() => fireEvent.click(getByText('Close')));
     await waitFor(() => expect(setShowAlert).toHaveBeenCalledTimes(1));
   });
 });

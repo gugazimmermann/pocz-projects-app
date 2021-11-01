@@ -1,6 +1,4 @@
-import {
-  fireEvent, render, screen, waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import LoadingButton, { LoadingButtonProps } from './LoadingButton';
 
 const loadingButtonObject: LoadingButtonProps = {
@@ -17,8 +15,9 @@ describe('Loading Button', () => {
     jest.useRealTimers();
     jest.clearAllMocks();
   });
+
   it('renders "Loading Button Text" test', () => {
-    render(
+    const { getByText } = render(
       <LoadingButton
         styles={loadingButtonObject.styles}
         type={loadingButtonObject.type}
@@ -26,12 +25,11 @@ describe('Loading Button', () => {
         loading={loadingButtonObject.loading}
       />,
     );
-    const linkElement = screen.getByText(loadingButtonObject.text);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText(loadingButtonObject.text)).toBeInTheDocument();
   });
 
   it('renders "Loading Button Text" test with loadingStyles', () => {
-    render(
+    const { getByText } = render(
       <LoadingButton
         styles={loadingButtonObject.styles}
         loadingStyles={loadingButtonObject.loadingStyles}
@@ -40,12 +38,11 @@ describe('Loading Button', () => {
         loading={loadingButtonObject.loading}
       />,
     );
-    const linkElement = screen.getByText(loadingButtonObject.text);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText(loadingButtonObject.text)).toBeInTheDocument();
   });
 
   it('renders "Loading Button Text" test without loading props', () => {
-    render(
+    const { getByText } = render(
       <LoadingButton
         styles={loadingButtonObject.styles}
         type={loadingButtonObject.type}
@@ -53,12 +50,11 @@ describe('Loading Button', () => {
         loading={false}
       />,
     );
-    const linkElement = screen.getByText(loadingButtonObject.text);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText(loadingButtonObject.text)).toBeInTheDocument();
   });
 
   it('click button must not call action', async () => {
-    render(
+    const { getByText } = render(
       <LoadingButton
         styles={loadingButtonObject.styles}
         type={loadingButtonObject.type}
@@ -66,13 +62,12 @@ describe('Loading Button', () => {
         loading={false}
       />,
     );
-    const btn = screen.getByText(loadingButtonObject.text);
-    await waitFor(() => fireEvent.click(btn));
+    await waitFor(() => fireEvent.click(getByText(loadingButtonObject.text)));
     await waitFor(() => expect(loadingButtonObject.action).toHaveBeenCalledTimes(0));
   });
 
   it('click button must call action', async () => {
-    render(
+    const { getByText } = render(
       <LoadingButton
         styles={loadingButtonObject.styles}
         type={loadingButtonObject.type}
@@ -81,8 +76,7 @@ describe('Loading Button', () => {
         action={loadingButtonObject.action}
       />,
     );
-    const btn = screen.getByText(loadingButtonObject.text);
-    await waitFor(() => fireEvent.click(btn));
+    await waitFor(() => fireEvent.click(getByText(loadingButtonObject.text)));
     await waitFor(() => expect(loadingButtonObject.action).toHaveBeenCalledTimes(1));
   });
 });

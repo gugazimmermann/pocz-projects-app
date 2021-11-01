@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { WARNING_TYPES } from '../../libs';
-import Callout, { CalloutProps } from './Callout';
+import Callout from './Callout';
 
-const calloutObject: CalloutProps = {
+const calloutObject = {
   type: WARNING_TYPES.INFO,
   title: 'Callout Text',
   emphasis: 'Callout Emphasis Text',
@@ -11,38 +11,36 @@ const calloutObject: CalloutProps = {
 
 describe('Callout', () => {
   it('renders "Callout Text" test', () => {
-    render(<Callout type={calloutObject.type} title={calloutObject.title} />);
-    const linkElement = screen.getByText(calloutObject.title);
-    expect(linkElement).toBeInTheDocument();
+    const { getByText } = render(
+      <Callout type={calloutObject.type} title={calloutObject.title} />,
+    );
+    expect(getByText(calloutObject.title)).toBeInTheDocument();
   });
 
   it('renders "Callout Emphasis Text" test', () => {
-    render(
+    const { getByText } = render(
       <Callout
         type={calloutObject.type}
         title={calloutObject.title}
         emphasis={calloutObject.emphasis}
       />,
     );
-    const linkElement = screen.getByText(calloutObject.emphasis as string);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText(calloutObject.emphasis)).toBeInTheDocument();
   });
 
   it('renders "Callout Content Text" test', () => {
-    render(
+    const { getByText } = render(
       <Callout
         type={calloutObject.type}
         title={calloutObject.title}
         content={calloutObject.content}
       />,
     );
-    const linkElement = screen.getByText(calloutObject.content as string);
-    expect(linkElement).toBeInTheDocument();
+    expect(getByText(calloutObject.content)).toBeInTheDocument();
   });
 
   it('renders "Callout Text" test without Type', () => {
-    render(<Callout title={calloutObject.title} />);
-    const linkElement = screen.getByText(calloutObject.title);
-    expect(linkElement).toBeInTheDocument();
+    const { getByText } = render(<Callout title={calloutObject.title} />);
+    expect(getByText(calloutObject.title)).toBeInTheDocument();
   });
 });

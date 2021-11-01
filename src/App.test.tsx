@@ -1,9 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
-test('Render SignIn page', () => {
-  render(<MemoryRouter><App /></MemoryRouter>);
-  const linkElement = screen.getByText(/Entre em seu escritório/i);
-  expect(linkElement).toBeInTheDocument();
+describe('App', () => {
+  it('App', () => {
+    const { getByText } = render(<MemoryRouter><App /></MemoryRouter>);
+    const linkElement = getByText('Entre em seu escritório');
+    expect(linkElement).toBeInTheDocument();
+  });
 });
