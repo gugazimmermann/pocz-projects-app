@@ -12,7 +12,6 @@ const loadingButtonObject: LoadingButtonProps = {
 
 describe('Loading Button', () => {
   afterEach(() => {
-    jest.useRealTimers();
     jest.clearAllMocks();
   });
 

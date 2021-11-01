@@ -6,20 +6,13 @@ import { AuthServices } from '../../services';
 import { errorHandler } from './errorHandler';
 
 describe('Error Handler', () => {
-  let mock: MockAdapter;
-
-  beforeAll(() => {
-    mock = new MockAdapter(api);
-  });
-
   afterEach(() => {
-    mock.reset();
+    jest.clearAllMocks();
   });
 
   it('return "Ocorreu um error ao acessar o servidor"', () => {
     try {
       errorHandler('test');
-      expect(true).toBe(false);
     } catch (err) {
       expect((err as any).message).toBe(
         'Ocorreu um error ao acessar o servidor',
@@ -28,6 +21,7 @@ describe('Error Handler', () => {
   });
 
   it('must be a AxiosError', async () => {
+    const mock = new MockAdapter(api);
     try {
       mock.onGet('/auth/me').networkErrorOnce();
       const mockedError = await AuthServices.getMe();
