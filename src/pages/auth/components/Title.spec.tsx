@@ -2,7 +2,7 @@ import faker from 'faker';
 import { render } from '@testing-library/react';
 import Title from './Title';
 
-faker.setLocale('pt-BR');
+faker.locale = 'pt_BR';
 
 const titleObj = {
   title: faker.datatype.string(),
