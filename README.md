@@ -12,4 +12,6 @@ Created using React / TypeScript / Tailwind
 
 ## Tests
 
-  `yarn test`  
+  `yarn test`
+
+  ![Tests Coverage](./readme-imgs/tests.png)
