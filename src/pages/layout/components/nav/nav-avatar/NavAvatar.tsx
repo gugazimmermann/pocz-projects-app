@@ -57,7 +57,7 @@ export function NavAvatar({ profile }: NavAvatarProps) {
           <img
             data-testid="avatarImgId"
             className="w-10 h-10 rounded-full"
-            src={`${process.env.REACT_APP_BUCKET_AVATAR_URL}${p.avatar}`}
+            src={`${process.env.REACT_APP_AVATAR_URL}${p.avatar}`}
             alt={p.name}
           />
         </button>

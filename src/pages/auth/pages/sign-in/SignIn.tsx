@@ -101,6 +101,7 @@ export function SignIn() {
               <input
                 type="text"
                 id="email"
+                autoComplete="on"
                 {...register('email', { required: true })}
                 className={
                   `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
@@ -120,6 +121,7 @@ export function SignIn() {
               <input
                 type="password"
                 id="password"
+                autoComplete="current-password"
                 {...register('password', { required: true })}
                 className={
                   `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${

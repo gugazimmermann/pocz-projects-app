@@ -12,7 +12,7 @@ configure({ asyncUtilTimeout: 5000 });
 faker.locale = 'pt_BR';
 
 const projectName = process.env.REACT_APP_PROJECT_NAME || '';
-const avatarBucket = process.env.REACT_APP_BUCKET_AVATAR_URL || '';
+const avatarBucket = process.env.REACT_APP_AVATAR_URL || '';
 
 const profile = {
   id: faker.datatype.uuid(),

@@ -24,10 +24,8 @@ jobs:
           echo REACT_APP_MERCADOPAGO_PUBLIC_KEY=${{ secrets.REACT_APP_MERCADOPAGO_PUBLIC_KEY }} >> .env
           echo REACT_APP_MERCADOPAGO_PUBLIC_KEY_TEST=${{ secrets.REACT_APP_MERCADOPAGO_PUBLIC_KEY_TEST }} >> .env
           echo REACT_APP_FREE_PLAN=${{ secrets.REACT_APP_FREE_PLAN }} >> .env
-          echo REACT_APP_BUCKET_AVATAR=${{ secrets.REACT_APP_BUCKET_AVATAR }} >> .env
-          echo REACT_APP_BUCKET_AVATAR_URL=${{ secrets.REACT_APP_BUCKET_AVATAR_URL }} >> .env
-          echo REACT_APP_BUCKET_FILES=${{ secrets.REACT_APP_BUCKET_FILES }} >> .env
-          echo REACT_APP_BUCKET_FILES_URL=${{ secrets.REACT_APP_BUCKET_FILES_URL }} >> .env
+          echo REACT_APP_AVATAR_URL=${{ secrets.REACT_APP_AVATAR_URL }} >> .env
+          echo REACT_APP_FILES_URL=${{ secrets.REACT_APP_FILES_URL }} >> .env
           cat .env
       - run: yarn install
       - run: yarn build
