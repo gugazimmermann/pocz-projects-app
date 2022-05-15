@@ -33,6 +33,8 @@ export function SignIn() {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.debug('process.env.REACT_APP_PROJECT_API_URL', process.env.REACT_APP_PROJECT_API_URL);
     if (state?.email) {
       setValue('email', state.email);
       setShowAlert({
