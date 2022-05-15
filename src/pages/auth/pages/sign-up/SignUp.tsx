@@ -99,6 +99,7 @@ export function SignUp() {
             <input
               type="password"
               id="password"
+              autoComplete="new-password"
               {...register('password', { required: true })}
               className={
                 `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
@@ -118,6 +119,7 @@ export function SignUp() {
             <input
               type="password"
               id="repeatPassword"
+              autoComplete="new-password"
               {...register('repeatPassword', { required: true })}
               className={
                 `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
