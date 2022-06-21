@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@api": ["src/api/index.ts"],
+      "@components": ["src/components/index.ts"],
+      "@icons": ["src/icons/index.ts"],
+      "@interfaces": ["src/interfaces/index.ts"],
+      "@lang": ["src/lang/index.ts"],
+      "@libs": ["src/libs/index.ts"],
+      "@routes": ["src/routes/index.ts"],
+      "@services": ["src/services/index.ts"],
+      "@settings": ["src/settings/index.ts"]
+    }
+  }
+}
