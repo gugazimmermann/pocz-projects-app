@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import api from '../../api';
+import { api } from '../../api';
 import { AuthServices } from '../../services';
 import { errorHandler } from './errorHandler';
 
@@ -14,9 +14,7 @@ describe('Error Handler', () => {
     try {
       errorHandler('test');
     } catch (err) {
-      expect((err as any).message).toBe(
-        'Ocorreu um error ao acessar o servidor',
-      );
+      expect((err as any).message).toBe('Ocorreu um error ao acessar o servidor');
     }
   });
 
@@ -28,7 +26,7 @@ describe('Error Handler', () => {
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
       errorHandler(mockedError);
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 });

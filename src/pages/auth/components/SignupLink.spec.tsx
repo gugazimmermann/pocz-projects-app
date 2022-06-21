@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { AuthRoutes } from '../../../routes';
+import { AuthRoutes } from '@routes';
 import SignupLink from './SignupLink';
 
 describe('SignupLink', () => {

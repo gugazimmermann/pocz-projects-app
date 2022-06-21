@@ -2,13 +2,12 @@ import {
   render, waitFor, screen, fireEvent,
 } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
-import routeData from 'react-router';
-import { Router } from 'react-router-dom';
+import routeData, { Router } from 'react-router';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import faker from 'faker';
 import userEvent from '@testing-library/user-event';
+import { AuthRoutes } from '@routes';
 import { AuthServices, SubscriptionsServices } from '../../../../services';
-import { AuthRoutes } from '../../../../routes';
 import Plans from './Plans';
 
 configure({ asyncUtilTimeout: 5000 });

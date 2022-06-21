@@ -2,15 +2,14 @@
 import faker from 'faker';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import api from '../../api';
-import TokenService from '../../api/token';
+import { api, TokenService } from '../../api';
 import * as AuthServices from './auth';
 import {
-  ForgotPasswordCodeRes,
-  ForgotPasswordRes,
   SignInRes,
+  ForgotPasswordRes,
+  ForgotPasswordCodeRes,
   UserRes,
-} from '../../interfaces/auth';
+} from '../../interfaces';
 
 const signUpObj = {
   name: faker.name.firstName(),
@@ -112,7 +111,7 @@ describe('Auth Service', () => {
       const mockedError = await AuthServices.signup(signUpObj);
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 
@@ -140,7 +139,7 @@ describe('Auth Service', () => {
       const mockedError = await AuthServices.signin(signInObj);
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 
@@ -167,7 +166,7 @@ describe('Auth Service', () => {
       const mockedError = await AuthServices.forgotpassword(signInObj);
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 
@@ -197,7 +196,7 @@ describe('Auth Service', () => {
       );
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 
@@ -224,7 +223,7 @@ describe('Auth Service', () => {
       const mockedError = await AuthServices.changepassword(changePasswordObj);
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 
@@ -232,7 +231,7 @@ describe('Auth Service', () => {
     try {
       mock.onGet('/auth/me').reply(
         () => new Promise((resolve) => {
-          setTimeout(() => resolve([200, getMeResObj]), 200);
+          setTimeout(() => resolve([200, { body: getMeResObj }]), 200);
         }),
       );
       const data = await AuthServices.getMe();
@@ -250,7 +249,7 @@ describe('Auth Service', () => {
       const mockedError = await AuthServices.getMe();
       expect(axios.isAxiosError(mockedError)).toBeTruthy();
     } catch (err) {
-      expect((err as any).message).toBe('');
+      expect((err as any).message).toBe('Error: Network Error');
     }
   });
 

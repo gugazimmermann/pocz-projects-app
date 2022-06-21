@@ -2,6 +2,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
 import routeData, { MemoryRouter } from 'react-router';
 import faker from 'faker';
+import { Lang } from '@lang';
 import { AuthServices } from '../../../../services';
 import SignIn from './SignIn';
 
@@ -22,13 +23,13 @@ describe('SignIn', () => {
     jest.restoreAllMocks();
   });
 
-  it('should have Entre em seu escritório as the title', () => {
+  it(`should have ${Lang.Auth.SignIn.Title} as the title`, () => {
     const { getByText } = render(
       <MemoryRouter>
         <SignIn />
       </MemoryRouter>,
     );
-    expect(getByText('Entre em seu escritório')).toBeTruthy();
+    expect(getByText(Lang.Auth.SignIn.Title)).toBeTruthy();
   });
 
   it('should change input class on missing field', async () => {

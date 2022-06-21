@@ -1,10 +1,8 @@
-import {
-  fireEvent, render, waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
 import routeData, { MemoryRouter } from 'react-router';
+import { AuthRoutes } from '@routes';
 import { AuthServices } from '../../../../services';
-import { AuthRoutes } from '../../../../routes';
 import ChangePassword from './ChangePassword';
 
 configure({ asyncUtilTimeout: 5000 });

@@ -53,9 +53,8 @@ describe('Alert', () => {
 
   it('click button must call setShowAlert', async () => {
     const setShowAlert = jest.fn();
-    const { getByText } = render(
-      <Alert alert={alertObject} setAlert={setShowAlert} />,
-    );
+    jest.useFakeTimers();
+    const { getByText } = render(<Alert alert={alertObject} setAlert={setShowAlert} />);
     await waitFor(() => fireEvent.click(getByText('Close')));
     await waitFor(() => expect(setShowAlert).toHaveBeenCalledTimes(1));
   });

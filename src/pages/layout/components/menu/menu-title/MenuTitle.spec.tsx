@@ -4,8 +4,8 @@ import {
 import { configure } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { AppRoutes } from '@routes';
 import MenuTitle from './MenuTitle';
-import { AppRoutes } from '../../../../../routes';
 
 configure({ asyncUtilTimeout: 5000 });
 

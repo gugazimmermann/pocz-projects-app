@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { Lang } from '@lang';
 import SignIn from '../sign-in/SignIn';
 import Layout from './Layout';
 
@@ -13,7 +14,7 @@ describe('Footer', () => {
       </MemoryRouter>,
     );
     expect(getByText(projectName)).toBeTruthy();
-    expect(getByText('Termos')).toBeTruthy();
-    expect(getByText('Entre em seu escritório')).toBeTruthy();
+    expect(getByText(Lang.Auth.Terms)).toBeTruthy();
+    expect(getByText(Lang.Auth.SignIn.Title)).toBeTruthy();
   });
 });

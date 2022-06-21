@@ -4,6 +4,7 @@ import { render, waitFor } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { Lang } from '@lang';
 import { PlacesServices, ProfilesServices } from '../../services';
 import Layout from './Layout';
 
@@ -151,7 +152,7 @@ describe('Layout', () => {
     await waitFor(() => expect(
       getByText('Complete o(s) dado(s) abaixo para liberar o sistema.'),
     ).toBeTruthy());
-    await waitFor(() => expect(getByText('Nenhum Escritório Cadastrado')).toBeTruthy());
+    await waitFor(() => expect(getByText(Lang.Layout.NoPlaceTitle)).toBeTruthy());
   });
 
   it('should have free plan end today', async () => {

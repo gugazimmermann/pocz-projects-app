@@ -3,8 +3,8 @@ import { render, waitFor, fireEvent } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { AppRoutes, AuthRoutes } from '@routes';
 import NavAvatar from './NavAvatar';
-import { AppRoutes, AuthRoutes } from '../../../../../routes';
 import { AuthServices } from '../../../../../services';
 
 configure({ asyncUtilTimeout: 5000 });
@@ -76,7 +76,7 @@ describe('NavAvatar', () => {
       </Router>,
     );
     await waitFor(() => fireEvent.click(getByText('Seu Perfil')));
-    expect(history.location.pathname).toBe(AppRoutes.profiles);
+    expect(history.location.pathname).toBe(AppRoutes.Profile);
   });
 
   it('should show avatar', async () => {
@@ -88,7 +88,7 @@ describe('NavAvatar', () => {
     );
     expect(getByAltText(profile.name)).toHaveAttribute(
       'src',
-      `${avatarBucket}${profile.avatar}`,
+      `${avatarBucket}/${profile.avatar}`,
     );
   });
 

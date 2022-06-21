@@ -37,14 +37,14 @@ describe('Menu', () => {
         <Menu profile={profile} places={1} setMenuOpen={setMenuOpen} menuOpen />
       </MemoryRouter>,
     );
-    expect(getAllByText('Escritórios')).toBeTruthy();
+    expect(getAllByText('Consultórios')).toBeTruthy();
     expect(getAllByText('Relatórios')).toBeTruthy();
   });
 
   it('should Relatórios not be in page', async () => {
     const setMenuOpen = jest.fn();
     const { queryByText } = render(
-      <MemoryRouter initialEntries={['/escritorios']}>
+      <MemoryRouter initialEntries={['/consultorios']}>
         <Menu
           profile={{ ...profile, zip: '' }}
           places={0}

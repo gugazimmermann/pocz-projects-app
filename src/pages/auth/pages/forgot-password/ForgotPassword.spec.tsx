@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter } from 'react-router-dom';
 import { AuthServices } from '../../../../services';
 import ForgotPassword from './ForgotPassword';
 
