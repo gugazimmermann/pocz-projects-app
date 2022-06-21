@@ -23,7 +23,6 @@ export async function getAll(type: string): Promise<IPersons[] | Error> {
 }
 
 export async function getOne({ id }: ApiIdReq): Promise<IPersons | Error> {
-  console.log('id', id);
   try {
     const { data } = await api.get(`/persons/${id}`);
     return data.body;
