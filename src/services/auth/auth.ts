@@ -1,25 +1,32 @@
-import api from '../../api';
-import TokenService from '../../api/token';
-import { ApiMessageRes } from '../../interfaces/api';
+import { api, TokenService } from '@api';
 import {
-  ChangePasswordReq,
-  ForgotPasswordCodeReq,
-  ForgotPasswordCodeRes,
-  ForgotPasswordReq,
-  ForgotPasswordRes,
+  SignUpReq,
+  ApiMessageRes,
   SignInReq,
   SignInRes,
-  SignUpReq,
+  ForgotPasswordReq,
+  ForgotPasswordRes,
+  ForgotPasswordCodeReq,
+  ForgotPasswordCodeRes,
+  ChangePasswordReq,
   UserRes,
-} from '../../interfaces/auth';
-import { errorHandler } from '../../libs';
+} from '@interfaces';
+import { errorHandler } from '@libs';
 
 export async function signup({
-  name, email, password, planId, cardInfo,
+  name,
+  email,
+  password,
+  planId,
+  cardInfo,
 }: SignUpReq): Promise<ApiMessageRes | Error> {
   try {
     const { data } = await api.post('/auth/register', {
-      name, email, password, planId, cardInfo,
+      name,
+      email,
+      password,
+      planId,
+      cardInfo,
     });
     return data;
   } catch (err) {
@@ -27,7 +34,10 @@ export async function signup({
   }
 }
 
-export async function signin({ email, password }: SignInReq): Promise<SignInRes | Error> {
+export async function signin({
+  email,
+  password,
+}: SignInReq): Promise<SignInRes | Error> {
   try {
     const { data } = await api.post('/auth/login', { email, password });
     TokenService.setUser(data);
@@ -37,9 +47,9 @@ export async function signin({ email, password }: SignInReq): Promise<SignInRes 
   }
 }
 
-export async function forgotpassword(
-  { email }: ForgotPasswordReq,
-): Promise<ForgotPasswordRes | Error> {
+export async function forgotpassword({
+  email,
+}: ForgotPasswordReq): Promise<ForgotPasswordRes | Error> {
   try {
     const res = await api.post('/auth/forgot-password', { email });
     return {
@@ -51,9 +61,9 @@ export async function forgotpassword(
   }
 }
 
-export async function getforgotpasswordcode(
-  { codeurl }: ForgotPasswordCodeReq,
-): Promise<ForgotPasswordCodeRes | Error> {
+export async function getforgotpasswordcode({
+  codeurl,
+}: ForgotPasswordCodeReq): Promise<ForgotPasswordCodeRes | Error> {
   try {
     const { data } = await api.post('/auth/forgot-password-code', { codeurl });
     return data;
@@ -62,12 +72,16 @@ export async function getforgotpasswordcode(
   }
 }
 
-export async function changepassword(
-  { codeNumber, password }: ChangePasswordReq,
-): Promise<ApiMessageRes | Error> {
+export async function changepassword({
+  codeNumber,
+  password,
+}: ChangePasswordReq): Promise<ApiMessageRes | Error> {
   const code = `${codeNumber}`.trim().replace(/ /g, '');
   try {
-    const { data } = await api.post('/auth/change-password', { code, password });
+    const { data } = await api.post('/auth/change-password', {
+      code,
+      password,
+    });
     return data;
   } catch (err) {
     return errorHandler(err);
@@ -77,7 +91,7 @@ export async function changepassword(
 export async function getMe(): Promise<UserRes | Error> {
   try {
     const { data } = await api.get('/auth/me');
-    return data;
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }

@@ -1,10 +1,15 @@
 import { lazy, ReactElement, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { AuthRoutes } from './routes';
-import Loading from './components/loading/Loading';
+import { Loading } from '@components';
+import {
+  AuthRoutes, AppRoutes, CommonRoutes, PublicRoute,
+} from '@routes';
 import AuthLayout from './pages/auth/pages/layout/Layout';
 import SignIn from './pages/auth/pages/sign-in/SignIn';
+import ProtectedRoute from './routes/ProtectedRoute';
+import Layout from './pages/layout/Layout';
 
+const NotFound = lazy(() => import('./pages/not-found/NotFound'));
 const ForgotPassword = lazy(
   () => import('./pages/auth/pages/forgot-password/ForgotPassword'),
 );
@@ -16,6 +21,12 @@ const Plans = lazy(() => import('./pages/auth/pages/plans/Plans'));
 const Subscription = lazy(
   () => import('./pages/auth/pages/subscription/Subscription'),
 );
+const Dashboards = lazy(() => import('./pages/dashboards/Dashboards'));
+const Profile = lazy(() => import('./pages/profile/Profile'));
+const Subscriptions = lazy(() => import('./pages/subscriptions/Subscriptions'));
+const Places = lazy(() => import('./pages/places/Places'));
+const Members = lazy(() => import('./pages/members/Members'));
+const Persons = lazy(() => import('./pages/persons/Persons'));
 
 function App(): ReactElement {
   return (
@@ -25,65 +36,275 @@ function App(): ReactElement {
           exact
           path="/"
           render={() => (
-            <AuthLayout>
-              <SignIn />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <SignIn />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={AuthRoutes.SignIn}
           render={() => (
-            <AuthLayout>
-              <SignIn />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <SignIn />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={AuthRoutes.ForgotPassword}
           render={() => (
-            <AuthLayout>
-              <ForgotPassword />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <ForgotPassword />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={`${AuthRoutes.ChangePassword}/:urlcode?`}
           render={() => (
-            <AuthLayout>
-              <ChangePassword />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <ChangePassword />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={AuthRoutes.SignUp}
           render={() => (
-            <AuthLayout>
-              <SignUp />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <SignUp />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={AuthRoutes.Plans}
           render={() => (
-            <AuthLayout>
-              <Plans />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <Plans />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
         <Route
           exact
           path={AuthRoutes.Subscription}
           render={() => (
-            <AuthLayout>
-              <Subscription />
-            </AuthLayout>
+            <PublicRoute>
+              <AuthLayout>
+                <Subscription />
+              </AuthLayout>
+            </PublicRoute>
           )}
         />
+
+        <Route
+          exact
+          path={AppRoutes.Dashboards}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Dashboards />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.DashboardsPlaces}/:id?`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Dashboards />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.DashboardsProcesses}/:id?`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Dashboards />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route
+          exact
+          path={AppRoutes.Profile}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={AppRoutes.Subscriptions}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Subscriptions />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route
+          exact
+          path={`${AppRoutes.Places}${CommonRoutes.LIST}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Places />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Places}${CommonRoutes.CREATE}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Places />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Places}${CommonRoutes.DETAILS}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Places />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Places}${CommonRoutes.UPDATE}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Places />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route
+          exact
+          path={`${AppRoutes.Members}${CommonRoutes.LIST}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Members />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Members}${CommonRoutes.CREATE}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Members />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Members}${CommonRoutes.DETAILS}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Members />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Members}${CommonRoutes.UPDATE}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Members />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route
+          exact
+          path={`${AppRoutes.Persons}/:type${CommonRoutes.LIST}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Persons />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Persons}/:type${CommonRoutes.CREATE}`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Persons />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Persons}/:type${CommonRoutes.DETAILS}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Persons />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AppRoutes.Persons}/:type${CommonRoutes.UPDATE}:id`}
+          render={() => (
+            <ProtectedRoute>
+              <Layout>
+                <Persons />
+              </Layout>
+            </ProtectedRoute>
+          )}
+        />
+
+        <Route path="*">
+          <NotFound />
+        </Route>
       </Switch>
     </Suspense>
   );

@@ -1,17 +1,18 @@
 import {
+  ReactNode,
+  useState,
+  useEffect,
   Children,
   cloneElement,
   ReactElement,
-  ReactNode,
-  useEffect,
-  useState,
 } from 'react';
 import { DateTime } from 'luxon';
-import { WARNING_TYPES } from '../../libs';
-import { AlertInterface, Alert, Callout } from '../../components';
-import { PlacesServices, ProfilesServices } from '../../services';
-import { IProfile } from '../../interfaces/profiles';
-import { Nav, Menu } from './components';
+import { AlertInterface, Alert, Callout } from '@components';
+import { IProfiles } from '@interfaces';
+import { Lang } from '@lang';
+import { WARNING_TYPES } from '@libs';
+import { ProfilesServices, PlacesServices } from '@services';
+import { Menu, Nav } from './components';
 
 interface LayoutProps {
   children: ReactNode;
@@ -27,7 +28,7 @@ export function Layout({ children }: LayoutProps) {
   const [menuOpen, setMenuOpen] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const [profile, setProfile] = useState({} as IProfile);
+  const [profile, setProfile] = useState({} as IProfiles);
   const [places, setPlaces] = useState<number>(0);
 
   function subscriptionEndDate(createdAt: string, frequency: number) {
@@ -37,16 +38,12 @@ export function Layout({ children }: LayoutProps) {
   }
 
   function finishIn(days: number): string {
-    if (days === 0) {
-      return 'Hoje';
-    }
-    if (days > 1) {
-      return `em ${days} dias`;
-    }
-    return `em ${days} dia`;
+    if (days === 0) return Lang.Layout.Today;
+    if (days > 1) return `${Lang.Layout.In} ${days} ${Lang.Layout.Days}`;
+    return `${Lang.Layout.In} ${days} ${Lang.Layout.Day}`;
   }
 
-  function freePlanMsg(p: IProfile) {
+  function freePlanMsg(p: IProfiles) {
     if (
       p.subscription
       && p.subscription.planId === process.env.REACT_APP_FREE_PLAN
@@ -57,7 +54,9 @@ export function Layout({ children }: LayoutProps) {
       );
       setShowAlert({
         show: true,
-        message: `${p.subscription.reason} termina ${finishIn(days)}.`,
+        message: `${p.subscription.reason} ${Lang.Layout.Finish} ${finishIn(
+          days,
+        )}.`,
         type: days > 3 ? WARNING_TYPES.NONE : WARNING_TYPES.WARNING,
       });
     }
@@ -65,7 +64,7 @@ export function Layout({ children }: LayoutProps) {
 
   async function whoIAm() {
     try {
-      const data = (await ProfilesServices.getOne()) as IProfile;
+      const data = (await ProfilesServices.getOne()) as IProfiles;
       setProfile(data);
       freePlanMsg(data);
     } catch (err: any) {
@@ -89,6 +88,11 @@ export function Layout({ children }: LayoutProps) {
       });
     }
   }
+
+  const seeIncompleteProfile = (avatarOrPhoto: string): string => {
+    const langText = Lang.Layout.IncompleteProfile.split('*');
+    return `${langText[0]}${avatarOrPhoto ? Lang.Layout.IncompleteProfileAvatar : Lang.Layout.IncompleteProfileInitial}${langText[1]}`;
+  };
 
   useEffect(() => {
     const { innerWidth: width } = window;
@@ -122,33 +126,30 @@ export function Layout({ children }: LayoutProps) {
           {(!profile.zip || places === 0) && (
             <Callout
               type={WARNING_TYPES.NONE}
-              title="Complete o(s) dado(s) abaixo para liberar o sistema."
+              title={Lang.Layout.IncompleteData}
             />
           )}
           {!profile.zip && (
             <Callout
               type={WARNING_TYPES.ERROR}
-              title="Seu Perfil está"
-              emphasis="Incompleto"
-              content={`Acesse seu Perfil clicando ${
-                profile.avatar && 'em sua foto'
-              } no canto superior direito.`}
+              title={Lang.Layout.IncompleteProfileTitle}
+              emphasis={Lang.Layout.IncompleteProfileEmphasis}
+              content={seeIncompleteProfile(profile.avatar)}
             />
           )}
           {places === 0 && (
             <Callout
               type={WARNING_TYPES.WARNING}
-              title="Nenhum Escritório Cadastrado"
-              content="Acesse Escritórios clicando no menu ao lateral."
+              title={Lang.Layout.NoPlaceTitle}
+              content={Lang.Layout.NoPlace}
             />
           )}
-          {profile.zip
-            && Children.map(children, (child) => cloneElement(child as ReactElement, {
-              profile,
-              setProfile,
-              places,
-              setPlaces,
-            }))}
+          {Children.map(children, (child) => cloneElement(child as ReactElement, {
+            profile,
+            setProfile,
+            places,
+            setPlaces,
+          }))}
         </main>
       </div>
     </div>

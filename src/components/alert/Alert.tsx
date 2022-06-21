@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { warningTypes, WARNING_TYPES } from '../../libs';
+import { WARNING_TYPES, warningTypes } from '@libs';
 
 export interface AlertInterface {
   show: boolean;

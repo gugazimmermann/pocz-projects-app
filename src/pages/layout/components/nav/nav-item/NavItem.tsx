@@ -1,10 +1,5 @@
-import { NotificationIcon, SearchIcon, SettingsIcon } from '../../../../../icons';
-
-export enum NAVICONS {
-  NOTIFICATION = 'notification',
-  SEARCH = 'search',
-  SETTINGS = 'settings',
-}
+import { SearchIcon, SettingsIcon, NotificationIcon } from '@icons';
+import { NAVICONS } from '../constants';
 
 export interface NavItemProps {
   item: string;
@@ -40,9 +35,7 @@ export function NavItem({
       onClick={() => (open ? open(!openState) : null)}
       className="p-2 relative transition-colors duration-200 rounded-full text-primary-500 bg-primary-50 hover:text-primary-900 hover:bg-primary-100 focus:outline-none focus:bg-primary-100 focus:ring-primary-900"
     >
-      <span className="sr-only">
-        {`Open ${item}`}
-      </span>
+      <span className="sr-only">{`Open ${item}`}</span>
       {getIcon(icon)}
       {alert && (
         <span className="absolute top-0 right-0 inline-block w-3 h-3 bg-secondary-500 border-2 border-white rounded-full" />

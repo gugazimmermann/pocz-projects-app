@@ -1,37 +1,74 @@
-function getLocalTenantId() {
-  const user = JSON.parse(localStorage.getItem('user') as string);
-  return user?.tenant;
+import CryptoJS from 'crypto-js';
+
+interface UserTokenProps {
+  accessToken: string;
+  refreshToken: string;
+  tenant: string;
 }
 
-function getLocalRefreshToken() {
-  const user = JSON.parse(localStorage.getItem('user') as string);
-  return user?.refreshToken;
+const localstorageName = process.env.REACT_APP_PROJECT_NAME || 'pocz';
+const tokenSecret = process.env.REACT_APP_TOKEN_SECRET || 'secret';
+
+function encryptUser(data: UserTokenProps): string {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), tokenSecret).toString();
 }
 
-function getLocalAccessToken() {
-  const user = JSON.parse(localStorage.getItem('user') as string);
-  return user?.accessToken;
+function decryptUser(): UserTokenProps {
+  let user = { accessToken: '', refreshToken: '', tenant: '' };
+  const cypherdata = localStorage.getItem(localstorageName) as string;
+  if (cypherdata) {
+    const bytes = CryptoJS.AES.decrypt(cypherdata, tokenSecret);
+    user = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  }
+  return user;
 }
 
-function updateLocalAccessToken(token: string) {
-  const user = JSON.parse(localStorage.getItem('user') as string);
+function getLocalTenantId(): string {
+  const user = decryptUser();
+  return user.tenant;
+}
+
+function getLocalRefreshToken(): string {
+  const user = decryptUser();
+  return user.refreshToken;
+}
+
+function getLocalAccessToken(): string {
+  const user = decryptUser();
+  return user.accessToken;
+}
+
+function updateLocalAccessToken(token: string): void {
+  const user = decryptUser();
   user.accessToken = token;
-  localStorage.setItem('user', JSON.stringify(user));
+  const cypherdata = encryptUser({
+    accessToken: user.accessToken,
+    refreshToken: user.refreshToken,
+    tenant: user.tenant,
+  });
+  localStorage.setItem(localstorageName, cypherdata);
 }
 
-function getUser() {
-  return JSON.parse(localStorage.getItem('user') as string);
+function getUser(): UserTokenProps {
+  return decryptUser();
 }
 
-function setUser(user: { accessToken: string, refreshToken: string, tenant: string }) {
-  localStorage.setItem('user', JSON.stringify(user));
+function setUser(data: UserTokenProps): void {
+  localStorage.setItem(
+    localstorageName,
+    encryptUser({
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      tenant: data.tenant,
+    }),
+  );
 }
 
-function removeUser() {
-  localStorage.removeItem('user');
+function removeUser(): void {
+  localStorage.removeItem(localstorageName);
 }
 
-const TokenService = {
+export const TokenService = {
   getLocalTenantId,
   getLocalRefreshToken,
   getLocalAccessToken,
@@ -40,5 +77,3 @@ const TokenService = {
   setUser,
   removeUser,
 };
-
-export default TokenService;

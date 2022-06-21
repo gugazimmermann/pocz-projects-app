@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { MenuArrowIcon } from '../../../../../icons';
-import { AppRoutes } from '../../../../../routes';
+import { AppRoutes } from '@routes';
+import { ArrowLeftIcon } from '@icons';
 
 export interface MenuTitleProps {
   setMenuOpen(menuOpen: boolean): void;
@@ -12,9 +12,12 @@ export function MenuTitle({ setMenuOpen, menuOpen }: MenuTitleProps) {
     <div className="border-b h-14 flex items-center">
       <Link
         to={AppRoutes.Dashboards}
-        className="text-3xl text-center font-bold tracking-wider text-primary-900 flex-grow"
+        className="text-3xl ml-6 text-center font-bold tracking-wider text-primary-600 flex-grow"
       >
-        {process.env.REACT_APP_PROJECT_NAME}
+        <div className="flex flex-row justify-center items-center">
+          <img src="/logo32.png" alt="logo" />
+          <span className="pl-4">{process.env.REACT_APP_PROJECT_NAME}</span>
+        </div>
       </Link>
       <button
         data-testid="menutitleId"
@@ -22,10 +25,7 @@ export function MenuTitle({ setMenuOpen, menuOpen }: MenuTitleProps) {
         onClick={() => setMenuOpen(!menuOpen)}
         className="w-min pb-4 pt-4 pl-4"
       >
-        <MenuArrowIcon
-          styles="w-4 h-4 rotate-90 transition-transform transform"
-          active={false}
-        />
+        <ArrowLeftIcon styles="w-6 h-6" />
       </button>
     </div>
   );

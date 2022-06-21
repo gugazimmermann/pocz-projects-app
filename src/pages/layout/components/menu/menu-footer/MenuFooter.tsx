@@ -1,6 +1,8 @@
+import { Lang } from '@lang';
+
 export function MenuFooter() {
   return (
-    <div className="flex-shrink-0 px-2 py-4 space-y-2">
+    <div className="shrink px-2 py-4 space-y-2">
       <button
         type="button"
         className="flex items-center justify-center w-full px-4 py-2 text-sm text-gray-900 rounded-md bg-primary-300 hover:bg-primary-500 hover:text-white focus:outline-none focus:ring-1 focus:ring-primary-300"
@@ -21,7 +23,7 @@ export function MenuFooter() {
             />
           </svg>
         </span>
-        <span>Preferências</span>
+        <span>{Lang.Layout.Menu.Footer.Settings}</span>
       </button>
     </div>
   );

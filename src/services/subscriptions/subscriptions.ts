@@ -1,43 +1,40 @@
-import api from '../../api';
+import { api } from '@api';
 import {
-  ICreditCard,
-  IPayment,
-  IPlan,
-  ISubscription,
-} from '../../interfaces/subscriptions';
-import { errorHandler } from '../../libs';
+  IPlans, ISubscriptions, IPayments, ICreditCards,
+} from '@interfaces';
+import { errorHandler } from '@libs';
 
-export async function getPlans(): Promise<IPlan[] | Error> {
+export async function getPlans(): Promise<IPlans[] | Error> {
   try {
-    const { data } = await api.get('/auth/plans');
-    return data;
+    const { data } = await api.get('/subscriptions/plans');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function getSubscription(): Promise<ISubscription | Error> {
+export async function getSubscription(): Promise<ISubscriptions | Error> {
   try {
-    const { data } = await api.get('/auth/subscription');
-    return data;
+    const { data } = await api.get('/subscriptions');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function getPayments(): Promise<IPayment[] | Error> {
+export async function getPayments(): Promise<IPayments[] | Error> {
   try {
-    const { data } = await api.get('/auth/payments');
-    return data;
+    const { data } = await api.get('/subscriptions/payments');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function getCreditcards(): Promise<ICreditCard[] | Error> {
+export async function getCreditcards(): Promise<ICreditCards[] | Error> {
   try {
-    const { data } = await api.get('/auth/credit-cards');
-    return data;
+    const { data } = await api.get('/subscriptions/credit-cards');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }

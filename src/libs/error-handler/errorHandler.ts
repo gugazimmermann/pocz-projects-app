@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { Lang } from '@lang';
 
 export function errorHandler(err: unknown): Error {
   if (axios.isAxiosError(err)) {
-    throw new Error(err.response?.data.message);
+    const msg = !err.response ? err : err.response?.data.message;
+    throw new Error(msg);
   }
-  throw new Error('Ocorreu um error ao acessar o servidor');
+  throw new Error(Lang.Errors.ServerError);
 }

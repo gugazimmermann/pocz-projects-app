@@ -1,58 +1,18 @@
 import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { IProfile } from '../../../../interfaces/profiles';
-import { MenuContext } from '../../context';
-import MenuFooter from './menu-footer/MenuFooter';
+import { IProfiles } from '@interfaces';
+import { PLACES } from '@settings';
+import { MenuContext } from '../../../../context';
 import MenuItem from './menu-item/MenuItem';
 import MenuTitle from './menu-title/MenuTitle';
+import { menu } from './settings';
 
-export interface MenuSubItemInterface {
-  name: string;
-  link: string;
-}
-
-export interface MenuItemInterface {
-  name: string;
-  route: string;
-  icon: string;
-  subItems: MenuSubItemInterface[];
-}
-
-interface MenuProps {
-  profile: IProfile;
+export interface MenuProps {
+  profile: IProfiles;
   places: number;
   setMenuOpen(menuOpen: boolean): void;
   menuOpen: boolean;
 }
-
-const menu: MenuItemInterface[] = [
-  {
-    name: 'Relatórios',
-    route: 'relatorios',
-    icon: 'DashboardIcon',
-    subItems: [
-      {
-        name: 'Escritórios',
-        link: '/relatorios/escritorios',
-      },
-      {
-        name: 'Processos',
-        link: '/relatorios/processos',
-      },
-    ],
-  },
-  {
-    name: 'Escritórios',
-    route: 'relatorios',
-    icon: 'PlacesIcon',
-    subItems: [
-      {
-        name: 'Escritórios',
-        link: '/escritorios/escritorios',
-      },
-    ],
-  },
-];
 
 export function Menu({
   profile, places, setMenuOpen, menuOpen,
@@ -62,12 +22,12 @@ export function Menu({
 
   useEffect(() => {
     const activeMenu = pathname.split('/')[1];
-    if (activeMenu) dispatch({ type: 'UPDATE_MENU', payload: pathname.split('/')[1] });
-  }, []);
+    if (activeMenu) { dispatch({ type: 'UPDATE_MENU', payload: pathname.split('/')[1] }); }
+  }, [pathname]);
 
   return (
     <aside
-      className={`flex-shrink-0 w-64 bg-white ${
+      className={`shrink w-64 bg-white ${
         !menuOpen ? 'hidden' : 'md:block'
       }`}
     >
@@ -76,17 +36,17 @@ export function Menu({
 
         <nav className="flex-1 px-2 pt-2 overflow-y-hidden hover:overflow-y-auto border-r">
           {menu.map((item, i) => {
-            if (item.name === 'Escritórios') {
+            if (item.name === PLACES.PLURAL) {
               return <MenuItem key={i} item={item} />;
             }
-            if (item.name !== 'Escritórios' && profile.zip && places) {
+            if (item.name !== PLACES.PLURAL && profile.zip && places) {
               return <MenuItem key={i} item={item} />;
             }
             return null;
           })}
         </nav>
-
-        <MenuFooter />
+        {/* TODO: User Settings */}
+        {/* <MenuFooter /> */}
       </div>
     </aside>
   );

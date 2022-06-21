@@ -1,4 +1,4 @@
-import { ButtonMobileIcon } from '../../../../../icons';
+import { ButtonMobileIcon } from '@icons';
 
 export interface NavMobileButtonProps {
   setNavOpen(navOpen: boolean): void;

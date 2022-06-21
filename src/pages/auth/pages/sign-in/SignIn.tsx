@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { AlertInterface, Alert, LoadingButton } from '../../../../components';
-import { SignInForm } from '../../../../interfaces/auth';
-import { WARNING_TYPES, validateEmail } from '../../../../libs';
-import { AppRoutes, AuthRoutes } from '../../../../routes';
-import { AuthServices } from '../../../../services';
+import { AlertInterface, Alert, LoadingButton } from '@components';
+import { SignInForm } from '@interfaces';
+import { Lang } from '@lang';
+import { WARNING_TYPES, validateEmail } from '@libs';
+import { AppRoutes, AuthRoutes } from '@routes';
+import { AuthServices } from '@services';
 import { Title, AuthLink, SignupLink } from '../../components';
 
 interface State {
@@ -33,27 +34,25 @@ export function SignIn() {
   });
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.debug('process.env.REACT_APP_PROJECT_API_URL', process.env.REACT_APP_PROJECT_API_URL);
     if (state?.email) {
       setValue('email', state.email);
       setShowAlert({
         show: true,
-        message: 'Cadastro realizado com sucesso!',
+        message: Lang.Auth.SignIn.RegistrationSuccess,
         type: WARNING_TYPES.SUCCESS,
       });
     }
     if (state?.changePassword) {
       setShowAlert({
         show: true,
-        message: 'Senha alterada com sucesso!',
+        message: Lang.Auth.SignIn.ChangePasswordSuccess,
         type: WARNING_TYPES.SUCCESS,
       });
     }
     if (state?.inviteaccepted) {
       setShowAlert({
         show: true,
-        message: 'Convite Aceito!',
+        message: Lang.Auth.SignIn.InviteAccepted,
         type: WARNING_TYPES.SUCCESS,
       });
     }
@@ -64,9 +63,8 @@ export function SignIn() {
     if (!validateEmail(form.email)) {
       setShowAlert({
         show: true,
-        message: 'Email inválido!',
+        message: Lang.Auth.SignIn.InvalidEmail,
         type: WARNING_TYPES.ERROR,
-        time: 3000,
       });
       setLoading(false);
       return;
@@ -80,7 +78,6 @@ export function SignIn() {
         show: true,
         message: err.message as string,
         type: WARNING_TYPES.ERROR,
-        time: 3000,
       });
       setLoading(false);
     }
@@ -89,7 +86,7 @@ export function SignIn() {
   return (
     <>
       <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
-        <Title title="Entre em seu escritório" />
+        <Title title={Lang.Auth.SignIn.Title} />
         {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
         <section className="mt-5">
           <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -98,19 +95,16 @@ export function SignIn() {
                 className="block text-gray-700 text-sm font-bold mb-1 ml-2"
                 htmlFor="email"
               >
-                Email
+                {Lang.Auth.SignIn.Email}
               </label>
               <input
                 type="text"
                 id="email"
                 autoComplete="on"
                 {...register('email', { required: true })}
-                className={
-                  `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
-                    errors.email
-                      ? 'border-red-600 '
-                      : 'focus:border-primary-600'}`
-                }
+                className={`bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
+                  errors.email ? 'border-red-600 ' : 'focus:border-primary-600'
+                }`}
               />
             </div>
             <div className="mb-2 rounded">
@@ -118,26 +112,28 @@ export function SignIn() {
                 className="block text-gray-700 text-sm font-bold mb-1 ml-2"
                 htmlFor="password"
               >
-                Senha
+                {Lang.Auth.SignIn.Password}
               </label>
               <input
                 type="password"
                 id="password"
                 autoComplete="current-password"
                 {...register('password', { required: true })}
-                className={
-                  `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
-                    errors.password
-                      ? 'border-red-600 '
-                      : 'focus:border-primary-600'}`
-                }
+                className={`bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
+                  errors.password
+                    ? 'border-red-600 '
+                    : 'focus:border-primary-600'
+                }`}
               />
             </div>
-            <AuthLink link={AuthRoutes.ForgotPassword} text="Esqueceu sua senha?" />
+            <AuthLink
+              link={AuthRoutes.ForgotPassword}
+              text={Lang.Auth.SignIn.ForgotPassword}
+            />
             <LoadingButton
               styles="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
-              text="Entrar"
+              text={Lang.Auth.SignIn.SignIn}
               loading={loading}
             />
           </form>

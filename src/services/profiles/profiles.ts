@@ -1,21 +1,22 @@
-import api from '../../api';
-import { ApiFormDataReq, ApiMessageRes } from '../../interfaces/api';
-import { IProfile } from '../../interfaces/profiles';
-import { errorHandler } from '../../libs';
+import { api } from '@api';
+import { IProfiles, ApiFormDataReq, ApiMessageRes } from '@interfaces';
+import { errorHandler } from '@libs';
 
-export async function getOne(): Promise<IProfile | Error> {
+export async function getOne(): Promise<IProfiles | Error> {
   try {
     const { data } = await api.get('/profile');
-    return data;
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function update({ formData }: ApiFormDataReq): Promise<ApiMessageRes | Error> {
+export async function update({
+  formData,
+}: ApiFormDataReq): Promise<ApiMessageRes | Error> {
   try {
     const { data } = await api.put('/profile', formData);
-    return data;
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }

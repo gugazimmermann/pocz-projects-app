@@ -96,7 +96,7 @@ export function BasicFeatures() {
               />
             </svg>
           </div>
-          <p className="font-medium text-gray-800">Processos Ilimitados</p>
+          <p className="font-medium text-gray-800">Consultas Ilimitados</p>
         </li>
         <li className="flex items-center">
           <div className="mr-2">

@@ -48,7 +48,7 @@ export function ProfessionalFeatures() {
               />
             </svg>
           </div>
-          <p className="font-medium text-gray-800">Escritórios Ilimitados</p>
+          <p className="font-medium text-gray-800">Consultórios Ilimitados</p>
         </li>
         <li className="flex items-center">
           <div className="mr-2">
@@ -96,7 +96,7 @@ export function ProfessionalFeatures() {
               />
             </svg>
           </div>
-          <p className="font-medium text-gray-800">Processos Ilimitados</p>
+          <p className="font-medium text-gray-800">Consultas Ilimitados</p>
         </li>
         <li className="flex items-center">
           <div className="mr-2">

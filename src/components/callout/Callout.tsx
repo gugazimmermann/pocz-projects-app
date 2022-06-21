@@ -1,5 +1,5 @@
 import { WarningIcon } from '../../icons';
-import { warningTypes, WARNING_TYPES } from '../../libs/warning-types/warningTypes';
+import { WARNING_TYPES, warningTypes } from '../../libs';
 
 export interface CalloutProps {
   type?: WARNING_TYPES;
@@ -11,7 +11,11 @@ export interface CalloutProps {
 export function Callout({
   type, title, emphasis, content,
 }: CalloutProps) {
-  const { text, bg, border } = warningTypes(type || WARNING_TYPES.NONE);
+  const {
+    text, bg, bgOpacity, border,
+  } = warningTypes(
+    type || WARNING_TYPES.NONE,
+  );
 
   return (
     <div className="container mx-auto m-2 relative flex flex-wrap sm:flex-no-wrap justify-between bg-white rounded p-2 space-x-0 sm:space-x-2 shadow-md">
@@ -19,7 +23,7 @@ export function Callout({
       <div className="flex space-x-4 items-center ">
         {type && (
           <div className="flex flex-1 sm:flex-initial justify-center items-baseline py-4 sm:py-0">
-            <span className={`bg-opacity-25 rounded-full p-1 ${bg}`}>
+            <span className={`rounded-full p-1 ${bg} ${bgOpacity}`}>
               <WarningIcon styles={`w-auto ${text}`} />
             </span>
           </div>

@@ -1,52 +1,59 @@
-import api from '../../api';
-import token from '../../api/token';
-import { ApiIdReq, ApiMessageRes } from '../../interfaces/api';
+import { api } from '@api';
 import {
-  IPlace, PlacesActiveReq, PlacesFormDataReq, PlacesManagerRes, PlacesUsersRes,
-} from '../../interfaces/places';
-import { errorHandler } from '../../libs';
+  IPlaces,
+  ApiIdReq,
+  PlacesFormDataReq,
+  ApiMessageRes,
+  PlacesActiveReq,
+  PlacesManagerRes,
+  PlacesEmployeesListRes,
+} from '@interfaces';
+import { errorHandler } from '@libs';
 
-export async function getAll(): Promise<IPlace[] | Error> {
+/* eslint-disable @typescript-eslint/no-shadow */
+export async function getAll(): Promise<IPlaces[] | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.get(`/places/${tenantId}`);
-    return data;
+    const { data } = await api.get('/places');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function getOne({ id }: ApiIdReq): Promise<IPlace | Error> {
+export async function getOne({ id }: ApiIdReq): Promise<IPlaces | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.get(`/places/${tenantId}/${id}`);
-    return data;
+    const { data } = await api.get(`/places/${id}`);
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function create({ formData }: PlacesFormDataReq): Promise<IPlace | Error> {
+export async function create({
+  formData,
+}: PlacesFormDataReq): Promise<IPlaces | Error> {
   try {
-    // eslint-disable-next-line no-param-reassign
-    formData.tenantId = token.getLocalTenantId();
     const { data } = await api.post('/places', formData);
-    return data;
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function update({ formData }: PlacesFormDataReq): Promise<IPlace | Error> {
+export async function update({
+  formData,
+}: PlacesFormDataReq): Promise<IPlaces | Error> {
   try {
-    const { data } = await api.put('/places', formData);
-    return data;
+    const { data } = await api.put(`/places/${formData.id}`, formData);
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function deleteOne({ id }: ApiIdReq): Promise<ApiMessageRes | Error> {
+export async function deleteOne({
+  id,
+}: ApiIdReq): Promise<ApiMessageRes | Error> {
   try {
     const { data } = await api.delete(`/places/${id}`);
     return data;
@@ -57,42 +64,50 @@ export async function deleteOne({ id }: ApiIdReq): Promise<ApiMessageRes | Error
 
 export async function count(): Promise<number | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.get(`/places/count/${tenantId}`);
-    return data.places;
+    const { data } = await api.get('/places/count');
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
-export async function active({ active, placeId }: PlacesActiveReq): Promise<IPlace | Error> {
+export async function active({
+  active,
+  placeId,
+}: PlacesActiveReq): Promise<IPlaces | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.post(`/places/active/${tenantId}`, { active, placeId });
-    return data;
+    const { data } = await api.put(`/places/active/${placeId}`, {
+      active,
+    });
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function managers(
-  { placeId, managersList }: PlacesManagerRes,
-): Promise<IPlace | Error> {
+export async function managers({
+  placeId,
+  managersList,
+}: PlacesManagerRes): Promise<IPlaces | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.post(`/places/managers/${tenantId}`, { placeId, managersList });
-    return data;
+    const { data } = await api.put(`/places/managers/${placeId}`, {
+      managersList,
+    });
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
 }
 
-export async function users({ placeId, usersList }: PlacesUsersRes): Promise<IPlace | Error> {
+export async function employees({
+  placeId,
+  employeesList,
+}: PlacesEmployeesListRes): Promise<IPlaces | Error> {
   try {
-    const tenantId = token.getLocalTenantId();
-    const { data } = await api.post(`/places/users/${tenantId}`, { placeId, usersList });
-    return data;
+    const { data } = await api.put(`/places/employees/${placeId}`, {
+      employeesList,
+    });
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }

@@ -1,4 +1,4 @@
-import { MenuIcon } from '../../../../../icons';
+import { MenuIcon } from '@icons';
 
 export interface NavMenuButtonProps {
   setMenuOpen(menuOpen: boolean): void;

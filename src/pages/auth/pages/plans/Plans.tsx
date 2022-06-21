@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
-import { PlanProfessionalIcon, PlanBasicIcon } from '../../../../icons';
-import { SignUpForm } from '../../../../interfaces/auth';
-import { IPlan } from '../../../../interfaces/subscriptions';
-import { showPlanPeriod } from '../../../../libs';
-import { AuthRoutes } from '../../../../routes';
-import { SubscriptionsServices, AuthServices } from '../../../../services';
+import { useState, useEffect } from 'react';
+import { useLocation, useHistory, Redirect } from 'react-router-dom';
+import { PlanProfessionalIcon, PlanBasicIcon } from '@icons';
+import { SignUpForm, IPlans } from '@interfaces';
+import { Lang } from '@lang';
+import { showPlanPeriod } from '@libs';
+import { AuthRoutes } from '@routes';
+import { SubscriptionsServices, AuthServices } from '@services';
 import { Title } from '../../components';
-import { BasicFeatures, ProfessionalFeatures } from './features';
+// TODO: fix features
+import { ProfessionalFeatures, BasicFeatures } from './features';
 
 interface State {
   form: SignUpForm;
@@ -18,12 +19,12 @@ export function Plans() {
   const history = useHistory();
   const state = location?.state as State;
   const form = state?.form;
-  const [plans, setPlans] = useState<IPlan[]>([]);
-  const [plan, setPlan] = useState<IPlan>();
+  const [plans, setPlans] = useState<IPlans[]>([]);
+  const [plan, setPlan] = useState<IPlans>();
   const [selectedPlan, setSelectedPlan] = useState('');
 
   async function getPlans() {
-    const data = (await SubscriptionsServices.getPlans()) as IPlan[];
+    const data = (await SubscriptionsServices.getPlans()) as IPlans[];
     const freePlan = data.find((p) => p.transactionAmount === 0);
     setSelectedPlan(freePlan?.id as string);
     setPlan(freePlan);
@@ -40,7 +41,7 @@ export function Plans() {
     setPlan(userPlan);
   }
 
-  function planIcon(p: IPlan | undefined) {
+  function planIcon(p: IPlans | undefined) {
     if (
       (p?.reason as string).toLowerCase().includes('profissional')
       || (p?.reason as string).toLowerCase().includes('gratuito')
@@ -50,7 +51,7 @@ export function Plans() {
     return <PlanBasicIcon styles="w-12 h-12 text-primary-700" />;
   }
 
-  function planFeatures(p: IPlan | undefined) {
+  function planFeatures(p: IPlans | undefined) {
     if (
       (p?.reason as string).toLowerCase().includes('profissional')
       || (p?.reason as string).toLowerCase().includes('gratuito')
@@ -60,7 +61,7 @@ export function Plans() {
     return <BasicFeatures />;
   }
 
-  function planMsg(p: IPlan | undefined) {
+  function planMsg(p: IPlans | undefined) {
     if (
       !(p?.reason as string).toLowerCase().includes('profissional')
       && !(p?.reason as string).toLowerCase().includes('gratuito')
@@ -68,7 +69,7 @@ export function Plans() {
       return (
         <div className="flex flex-col items-center justify-center text-center">
           <p className="mt-4 text-sm text-gray-600">
-            O plano pode ser alterado posteriormente para Profissional.
+            {Lang.Auth.Plans.ChangeProfissional}
           </p>
         </div>
       );
@@ -76,10 +77,10 @@ export function Plans() {
     return (
       <div className="flex flex-col items-center justify-center text-center">
         <p className="mt-4 text-sm font-bold text-red-600">
-          Período de testes de 15 dias!
+          {Lang.Auth.Plans.FreeTrial}
         </p>
         <p className="mt-2 text-sm text-gray-600">
-          O plano pode ser alterado posteriormente para Básico ou Profissional.
+          {Lang.Auth.Plans.ChangeBasicOrProfissional}
         </p>
       </div>
     );
@@ -122,10 +123,13 @@ export function Plans() {
                     {' '}
                     -
                     {' '}
-                    {(p.transactionAmount as number).toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: p.currencyId,
-                    })}
+                    {(p.transactionAmount as number).toLocaleString(
+                      Lang.CountryCode,
+                      {
+                        style: 'currency',
+                        currency: p.currencyId,
+                      },
+                    )}
                   </option>
                 ))}
             </select>
@@ -143,7 +147,7 @@ export function Plans() {
                       </p>
                       <p className="text-3xl font-bold text-primary-700">
                         {(plan?.transactionAmount as number).toLocaleString(
-                          'pt-br',
+                          Lang.CountryCode,
                           {
                             style: 'currency',
                             currency: plan?.currencyId,
@@ -164,7 +168,7 @@ export function Plans() {
                   <div>
                     <div className="w-full text-center">
                       <p className="mb-2 font-bold tracking-wide">
-                        Características
+                        {Lang.Auth.Plans.Details}
                       </p>
                     </div>
                     {planFeatures(plan)}
@@ -181,7 +185,7 @@ export function Plans() {
             type="button"
             onClick={() => handleFoward()}
           >
-            Avançar
+            {Lang.Auth.Plans.Foward}
           </button>
         </div>
       </section>

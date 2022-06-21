@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useLocation, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { ChangePasswordForm } from '../../../../interfaces/auth';
-import { AlertInterface, Alert, LoadingButton } from '../../../../components';
-import { WARNING_TYPES } from '../../../../libs';
-import { AuthServices } from '../../../../services';
-import { AuthLink, Title } from '../../components';
-import { AuthRoutes } from '../../../../routes';
+import { AlertInterface, Alert, LoadingButton } from '@components';
+import { ChangePasswordForm } from '@interfaces';
+import { Lang } from '@lang';
+import { formatText, WARNING_TYPES } from '@libs';
+import { AuthRoutes } from '@routes';
+import { AuthServices } from '@services';
+import { Title, AuthLink } from '../../components';
 
 type StateType = {
   email: string;
   date: string;
-}
+};
 
 export function ChangePassword() {
   const { urlcode } = useParams<{ urlcode: string }>();
@@ -36,7 +37,9 @@ export function ChangePassword() {
   useEffect(() => {
     async function getPasswordCode(code: string) {
       try {
-        const res = (await AuthServices.getforgotpasswordcode({ codeurl: code })) as {
+        const res = (await AuthServices.getforgotpasswordcode({
+          codeurl: code,
+        })) as {
           code: string;
         };
         setLoading(false);
@@ -45,7 +48,7 @@ export function ChangePassword() {
         setCodeurl('');
         setShowAlert({
           show: true,
-          message: 'Não foi possível recuperar o código, verifique seu email.',
+          message: Lang.Auth.ChangePassword.NoCodeError,
           type: WARNING_TYPES.ERROR,
           time: 3000,
         });
@@ -58,9 +61,9 @@ export function ChangePassword() {
   }, [history, setValue, codeurl]);
 
   function showInfo(infoSstate: StateType) {
-    const dia = infoSstate.date.split(' ')[0];
+    const day = infoSstate.date.split(' ')[0];
     const dateSplit = infoSstate.date.split(' ')[1];
-    const horas = `${dateSplit.split(':')[0]}:${dateSplit.split(':')[1]}`;
+    const hours = `${dateSplit.split(':')[0]}:${dateSplit.split(':')[1]}`;
 
     return (
       <div
@@ -78,27 +81,23 @@ export function ChangePassword() {
             </svg>
           </div>
           <div>
-            <p className="py-1">
-              Veja o email
-              {' '}
-              <span className="font-bold">{state.email}</span>
-              {' '}
-              e
-              preencha o código.
-            </p>
-            <p className="py-1">
-              Válido até às
-              {' '}
-              <span className="font-bold">
-                {horas}
-                hs
-              </span>
-              {' '}
-              de
-              {' '}
-              <span className="font-bold">{dia}</span>
-              .
-            </p>
+            <p
+              className="py-1"
+              dangerouslySetInnerHTML={{
+                __html: formatText(Lang.Auth.ChangePassword.SeeEmail, [
+                  `<span className="font-bold">${state.email}</span>`,
+                ]),
+              }}
+            />
+            <p
+              className="py-1"
+              dangerouslySetInnerHTML={{
+                __html: formatText(Lang.Auth.ChangePassword.SeeValidate, [
+                  `<span className="font-bold">${hours} hs</span>`,
+                  `<span className="font-bold">${day}</span>`,
+                ]),
+              }}
+            />
           </div>
         </div>
       </div>
@@ -111,7 +110,7 @@ export function ChangePassword() {
     if (form.newpassword !== form.repeatnewpassword) {
       setShowAlert({
         show: true,
-        message: 'Senhas são diferentes!',
+        message: Lang.Auth.ChangePassword.DifferentPassword,
         type: WARNING_TYPES.ERROR,
         time: 3000,
       });
@@ -149,17 +148,16 @@ export function ChangePassword() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="code"
             >
-              Código
+              {Lang.Auth.ChangePassword.Code}
             </label>
             <input
               type="text"
               id="code"
               disabled={!!codeurl}
               {...register('code', { required: true })}
-              className={
-                `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
-                  errors.code ? 'border-red-600 ' : 'focus:border-primary-600'}`
-              }
+              className={`bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
+                errors.code ? 'border-red-600 ' : 'focus:border-primary-600'
+              }`}
             />
           </div>
           <div className="mb-2 rounded">
@@ -167,18 +165,17 @@ export function ChangePassword() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="newpassword"
             >
-              Nova Senha
+              {Lang.Auth.ChangePassword.NewPassword}
             </label>
             <input
               type="password"
               id="newpassword"
               {...register('newpassword', { required: true })}
-              className={
-                `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
-                  errors.newpassword
-                    ? 'border-red-600 '
-                    : 'focus:border-primary-600'}`
-              }
+              className={`bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
+                errors.newpassword
+                  ? 'border-red-600 '
+                  : 'focus:border-primary-600'
+              }`}
             />
           </div>
           <div className="mb-2 rounded">
@@ -186,25 +183,24 @@ export function ChangePassword() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="repeatnewpassword"
             >
-              Repita Nova Senha
+              {Lang.Auth.ChangePassword.RepeatNewPassword}
             </label>
             <input
               type="password"
               id="repeatnewpassword"
               {...register('repeatnewpassword', { required: true })}
-              className={
-                `bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
-                  errors.repeatnewpassword
-                    ? 'border-red-600 '
-                    : 'focus:border-primary-600'}`
-              }
+              className={`bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 transition duration-500 px-2 py-2 ${
+                errors.repeatnewpassword
+                  ? 'border-red-600 '
+                  : 'focus:border-primary-600'
+              }`}
             />
           </div>
           <AuthLink link={AuthRoutes.SignIn} text="Voltar para Entrar" />
           <LoadingButton
             styles="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
             type="submit"
-            text="Alterar Senha"
+            text={Lang.Auth.ChangePassword.ChangePassword}
             loading={loading}
           />
         </form>

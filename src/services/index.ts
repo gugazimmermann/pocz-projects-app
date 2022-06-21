@@ -1,4 +1,9 @@
+export * as AttachmentsServices from './attachments/attachments';
 export * as AuthServices from './auth/auth';
+export * as CompaniesServices from './companies/companies';
+export * as MembersServices from './members/members';
+export * as NotesServices from './notes/notes';
+export * as PersonsServices from './persons/persons';
 export * as PlacesServices from './places/places';
 export * as ProfilesServices from './profiles/profiles';
 export * as SubscriptionsServices from './subscriptions/subscriptions';

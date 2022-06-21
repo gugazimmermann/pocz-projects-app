@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation, Redirect } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { AlertInterface, Alert, LoadingButton } from '../../../../components';
-import { SignUpForm, SubscriptionForm } from '../../../../interfaces/auth';
-import { IPlan } from '../../../../interfaces/subscriptions';
-import { showPlanPeriod, WARNING_TYPES } from '../../../../libs';
-import { AuthRoutes } from '../../../../routes';
-import { AuthServices } from '../../../../services';
+import { AlertInterface, Alert, LoadingButton } from '@components';
+import { SignUpForm, IPlans, SubscriptionForm } from '@interfaces';
+import { Lang } from '@lang';
+import { WARNING_TYPES, showPlanPeriod } from '@libs';
+import { AuthRoutes } from '@routes';
+import { AuthServices } from '@services';
+import { useHistory, useLocation, Redirect } from 'react-router-dom';
 import { Title } from '../../components';
 import {
   MercadoPago,
@@ -34,7 +34,7 @@ export function Subscription() {
   const location = useLocation();
   const state = location?.state as {
     form: SignUpForm;
-    plan: IPlan;
+    plan: IPlans;
   };
   const form = state?.form || undefined;
   const plan = state?.plan || undefined;
@@ -150,7 +150,7 @@ export function Subscription() {
   }
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
-      <Title title="Pagamento da Assinatura" />
+      <Title title={Lang.Auth.Subscription.Title} />
       {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section>
         <div className="flex flex-col md:flex-row items-center justify-between mb-4">
@@ -158,10 +158,13 @@ export function Subscription() {
             {plan?.reason}
           </p>
           <p className="text-xl font-bold text-primary-700">
-            {(plan?.transactionAmount as number).toLocaleString('pt-br', {
-              style: 'currency',
-              currency: plan?.currencyId,
-            })}
+            {(plan?.transactionAmount as number).toLocaleString(
+              Lang.CountryCode,
+              {
+                style: 'currency',
+                currency: plan?.currencyId,
+              },
+            )}
             {' '}
             /
             {' '}
@@ -180,7 +183,7 @@ export function Subscription() {
               className="block text-gray-700 text-sm font-bold"
               htmlFor="name"
             >
-              Titular do cartão
+              {Lang.Auth.Subscription.CardOwner}
             </label>
             <input
               type="text"
@@ -197,7 +200,7 @@ export function Subscription() {
                 className="block text-gray-700 text-sm font-bold"
                 htmlFor="cardNumber"
               >
-                Número do Cartão
+                {Lang.Auth.Subscription.CardNumber}
               </label>
               <input
                 type="text"
@@ -222,7 +225,7 @@ export function Subscription() {
                   className="block text-gray-700 text-sm font-bold"
                   htmlFor="cardExpiration"
                 >
-                  Vencimento
+                  {Lang.Auth.Subscription.CardValid}
                 </label>
                 <input
                   type="text"
@@ -241,10 +244,10 @@ export function Subscription() {
                   htmlFor="securityCode"
                 >
                   <span className="inline-flex md:hidden">
-                    Cód. de Segurança
+                    {Lang.Auth.Subscription.CardSecurityCodeAbbr}
                   </span>
                   <span className="hidden md:inline-flex">
-                    Código de Segurança
+                    {Lang.Auth.Subscription.CardSecurityCode}
                   </span>
                 </label>
                 <input
@@ -267,9 +270,11 @@ export function Subscription() {
                   className="block text-gray-700 text-sm font-bold"
                   htmlFor="documentType"
                 >
-                  <span className="inline-flex md:hidden">Documento</span>
+                  <span className="inline-flex md:hidden">
+                    {Lang.Auth.Subscription.UserDocument}
+                  </span>
                   <span className="hidden md:inline-flex">
-                    Tipo de Documento
+                    {Lang.Auth.Subscription.UserDocumentType}
                   </span>
                 </label>
                 <select
@@ -291,7 +296,7 @@ export function Subscription() {
                   className="block text-gray-700 text-sm font-bold"
                   htmlFor="document"
                 >
-                  Número do Documento
+                  {Lang.Auth.Subscription.UserDocumentNumber}
                 </label>
                 <input
                   type="text"
@@ -309,7 +314,7 @@ export function Subscription() {
           <LoadingButton
             styles="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
             type="submit"
-            text="Avançar"
+            text={Lang.Auth.Subscription.Foward}
             loading={loading}
           />
         </form>
