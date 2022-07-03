@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useHistory, Redirect } from 'react-router-dom';
+import { AlertInterface, Alert } from '@components';
 import { PlanProfessionalIcon, PlanBasicIcon } from '@icons';
 import { SignUpForm, IPlans } from '@interfaces';
 import { Lang } from '@lang';
-import { showPlanPeriod } from '@libs';
+import { showPlanPeriod, WARNING_TYPES } from '@libs';
 import { AuthRoutes } from '@routes';
 import { SubscriptionsServices, AuthServices } from '@services';
 import { Title } from '../../components';
@@ -22,13 +23,27 @@ export function Plans() {
   const [plans, setPlans] = useState<IPlans[]>([]);
   const [plan, setPlan] = useState<IPlans>();
   const [selectedPlan, setSelectedPlan] = useState('');
+  const [showAlert, setShowAlert] = useState<AlertInterface>({
+    show: false,
+    message: '',
+    type: WARNING_TYPES.NONE,
+    time: 3000,
+  });
 
   async function getPlans() {
-    const data = (await SubscriptionsServices.getPlans()) as IPlans[];
-    const freePlan = data.find((p) => p.transactionAmount === 0);
-    setSelectedPlan(freePlan?.id as string);
-    setPlan(freePlan);
-    setPlans(data);
+    try {
+      const data = (await SubscriptionsServices.getPlans()) as IPlans[];
+      const freePlan = data.find((p) => p.transactionAmount === 0);
+      setSelectedPlan(freePlan?.id as string);
+      setPlan(freePlan);
+      setPlans(data);
+    } catch (err: any) {
+      setShowAlert({
+        show: true,
+        message: err.message as string,
+        type: WARNING_TYPES.ERROR,
+      });
+    }
   }
 
   useEffect(() => {
@@ -106,6 +121,7 @@ export function Plans() {
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
       <Title title="Selecione seu Plano" />
+      {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section>
         <form className="flex flex-col">
           <div className="mb-2 rounded">
