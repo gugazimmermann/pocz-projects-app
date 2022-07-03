@@ -1,8 +1,5 @@
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import { configure } from '@testing-library/dom';
 import LoadingButton, { LoadingButtonProps } from './LoadingButton';
-
-configure({ asyncUtilTimeout: 5000 });
 
 const loadingButtonObject: LoadingButtonProps = {
   styles: 'bg-primary-600',

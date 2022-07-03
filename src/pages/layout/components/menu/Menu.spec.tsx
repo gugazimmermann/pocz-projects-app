@@ -1,6 +1,8 @@
 import faker from 'faker';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { AppRoutes } from '@routes';
+import { DASHBOARD, PLACES } from '@settings';
 import Menu from './Menu';
 
 faker.locale = 'pt_BR';
@@ -30,21 +32,21 @@ const profile = {
 };
 
 describe('Menu', () => {
-  it('should Relatórios be in page', async () => {
+  it(`should ${AppRoutes.Dashboards} and ${AppRoutes.Places} be in page`, async () => {
     const setMenuOpen = jest.fn();
     const { getAllByText } = render(
       <MemoryRouter initialEntries={['/']}>
         <Menu profile={profile} places={1} setMenuOpen={setMenuOpen} menuOpen />
       </MemoryRouter>,
     );
-    expect(getAllByText('Consultórios')).toBeTruthy();
-    expect(getAllByText('Relatórios')).toBeTruthy();
+    expect(getAllByText(DASHBOARD.PLURAL)).toBeTruthy();
+    expect(getAllByText(PLACES.PLURAL)).toBeTruthy();
   });
 
-  it('should Relatórios not be in page', async () => {
+  it(`should ${AppRoutes.Dashboards} not be in page`, async () => {
     const setMenuOpen = jest.fn();
-    const { queryByText } = render(
-      <MemoryRouter initialEntries={['/consultorios']}>
+    const { queryByText, getAllByText } = render(
+      <MemoryRouter initialEntries={[AppRoutes.Places]}>
         <Menu
           profile={{ ...profile, zip: '' }}
           places={0}
@@ -53,6 +55,23 @@ describe('Menu', () => {
         />
       </MemoryRouter>,
     );
-    expect(queryByText('Relatórios')).not.toBeInTheDocument();
+    expect(queryByText(DASHBOARD.PLURAL)).not.toBeInTheDocument();
+    expect(getAllByText(PLACES.PLURAL)).toBeTruthy();
+  });
+
+  it(`should click ${AppRoutes.Dashboards}`, async () => {
+    const setMenuOpen = jest.fn();
+    const { queryByText, getAllByText } = render(
+      <MemoryRouter initialEntries={[AppRoutes.Places]}>
+        <Menu
+          profile={{ ...profile, zip: '' }}
+          places={0}
+          setMenuOpen={setMenuOpen}
+          menuOpen={false}
+        />
+      </MemoryRouter>,
+    );
+    expect(queryByText(DASHBOARD.PLURAL)).not.toBeInTheDocument();
+    expect(getAllByText(PLACES.PLURAL)).toBeTruthy();
   });
 });

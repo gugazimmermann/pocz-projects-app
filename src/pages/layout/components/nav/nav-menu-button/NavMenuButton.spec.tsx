@@ -1,10 +1,7 @@
 import { render, waitFor, fireEvent } from '@testing-library/react';
-import { configure } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import NavMenuButton from './NavMenuButton';
-
-configure({ asyncUtilTimeout: 5000 });
 
 describe('NavMenuButton', () => {
   afterEach(() => {

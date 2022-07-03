@@ -1,13 +1,10 @@
 import faker from 'faker';
 import { render, waitFor, fireEvent } from '@testing-library/react';
-import { configure } from '@testing-library/dom';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { AppRoutes, AuthRoutes } from '@routes';
 import NavAvatar from './NavAvatar';
 import { AuthServices } from '../../../../../services';
-
-configure({ asyncUtilTimeout: 5000 });
 
 faker.locale = 'pt_BR';
 

@@ -7,6 +7,7 @@ export interface BreadcrumbProps {
 export function Breadcrumb({ before, main, hide }: BreadcrumbProps) {
   return (
     <ul
+      data-testid="breadcrumb"
       className={`text-gray-500 text-sm ${
         hide ? 'hidden' : 'block md:inline-block'
       }`}
