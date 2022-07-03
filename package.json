@@ -18,11 +18,9 @@
       "src/libs/**/*.{js,ts,tsx}",
       "src/pages/**/*.{js,ts,tsx}",
       "src/services/**/*.{js,ts,tsx}",
-      "!src/pages/auth/pages/subscription/**/*.{js,ts,tsx}",
-      "!src/pages/auth/pages/plans/features/**/*.{js,ts,tsx}",
-      "!src/pages/layout/context/**/*.{js,ts,tsx}",
       "!src/**/index.ts",
-      "!<rootDir>/node_modules/"
+      "!<rootDir>/node_modules/",
+      "!src/pages/auth/pages/subscription/**/*.{js,ts,tsx}"
     ]
   },
   "husky": {
