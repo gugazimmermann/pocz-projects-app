@@ -28,7 +28,7 @@ const Places = lazy(() => import('./pages/places/Places'));
 const Members = lazy(() => import('./pages/members/Members'));
 const Persons = lazy(() => import('./pages/persons/Persons'));
 
-function App(): ReactElement {
+export default function App(): ReactElement {
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
@@ -309,5 +309,3 @@ function App(): ReactElement {
     </Suspense>
   );
 }
-
-export default App;

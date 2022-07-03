@@ -9,7 +9,7 @@ import { PlacesServices } from '@services';
 import { PLACES } from '@settings';
 import { sectionOne, sectionTwo, sectionThree } from './sections';
 
-export function Dashboards() {
+export default function Dashboards() {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const [places, setPlaces] = useState<IPlaces[]>();
@@ -43,6 +43,7 @@ export function Dashboards() {
   const selectPlaces = () => (
     <select
       id="places"
+      data-testid="places"
       className="rounded-md focus:ring-0 text-gray-900 focus:ring-primary-500/75 border-gray-300"
       onChange={(e) => {
         if (e.target.value) {
@@ -85,5 +86,3 @@ export function Dashboards() {
     <div />
   );
 }
-
-export default Dashboards;
