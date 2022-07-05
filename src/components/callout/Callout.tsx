@@ -22,10 +22,10 @@ export function Callout({
       <div className={`absolute inset-0 border-l-4 ${border} rounded-sm`} />
       <div className="flex space-x-4 items-center ">
         {type && (
-          <div className="flex flex-1 sm:flex-initial justify-center items-baseline py-4 sm:py-0">
-            <span className={`rounded-full p-1 ${bg} ${bgOpacity}`}>
+          <div className="w-12">
+            <div className={`h-12 w-12 flex justify-center items-center rounded-full p-2 ${bg} ${bgOpacity}`}>
               <WarningIcon styles={`w-auto ${text}`} />
-            </span>
+            </div>
           </div>
         )}
         <div className="flex flex-col flex-grow text-center sm:text-left">

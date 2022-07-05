@@ -97,7 +97,7 @@ export function NavAvatar({ profile }: NavAvatarProps) {
       {avatarButton(profile)}
       <div
         ref={divRef}
-        className={`absolute right-0 top-12 w-42 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none ${
+        className={`absolute right-0 top-12 w-40 py-1 bg-white rounded-md shadow-lg ring-1 ring-black/5 focus:outline-none ${
           !open ? 'hidden' : ''
         }`}
       >

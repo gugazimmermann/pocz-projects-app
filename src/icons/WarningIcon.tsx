@@ -5,8 +5,6 @@ export function WarningIcon({ styles }: IconProps) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={styles}
-      width="25"
-      height="25"
       viewBox="0 0 23 25"
       fill="none"
       stroke="currentColor"
