@@ -23,6 +23,7 @@ export const AuthRoutes = {
   SignUp: `/${Lang.Auth.SignUp.Route}`,
   Plans: `/${Lang.Auth.Plans.Route}`,
   Subscription: `/${Lang.Auth.Subscription.Route}`,
+  Invite: `/${Lang.Auth.Invite.Route}`,
 };
 
 export const CommonRoutes = {

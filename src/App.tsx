@@ -21,6 +21,7 @@ const Plans = lazy(() => import('./pages/auth/pages/plans/Plans'));
 const Subscription = lazy(
   () => import('./pages/auth/pages/subscription/Subscription'),
 );
+const Invite = lazy(() => import('./pages/auth/pages/invite/Invite'));
 const Dashboards = lazy(() => import('./pages/dashboards/Dashboards'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const Subscriptions = lazy(() => import('./pages/subscriptions/Subscriptions'));
@@ -105,6 +106,17 @@ export default function App(): ReactElement {
             <PublicRoute>
               <AuthLayout>
                 <Subscription />
+              </AuthLayout>
+            </PublicRoute>
+          )}
+        />
+        <Route
+          exact
+          path={`${AuthRoutes.Invite}/:tenantId?/:code?`}
+          render={() => (
+            <PublicRoute>
+              <AuthLayout>
+                <Invite />
               </AuthLayout>
             </PublicRoute>
           )}

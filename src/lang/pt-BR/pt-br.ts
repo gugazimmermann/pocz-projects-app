@@ -104,6 +104,9 @@ const Auth = {
     UserDocumentNumber: 'Número do Documento',
     Foward: 'Avançar',
   },
+  Invite: {
+    Route: 'convite',
+  },
 };
 
 const Layout = {
