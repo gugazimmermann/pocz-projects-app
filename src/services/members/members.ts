@@ -44,16 +44,18 @@ export async function getOne({
 }
 
 export async function create({
+  tenantId,
   code,
   password,
 }: MembersCreateReq): Promise<ApiMessageRes | Error> {
   try {
     const clearCode = +(code as string).toString().trim().replace(/ /g, '');
     const { data } = await api.post('/members', {
+      tenantId,
       code: clearCode,
       password,
     });
-    return data;
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }
@@ -69,11 +71,12 @@ export async function getInvites(): Promise<IMembers[] | Error> {
 }
 
 export async function getInviteCode({
+  tenantId,
   code,
 }: MembersInviteCodeReq): Promise<IMembers | Error> {
   try {
-    const { data } = await api.get(`/members/invites/code/${code}`);
-    return data;
+    const { data } = await api.get(`/members/invites/code/${tenantId}/${code}`);
+    return data.body;
   } catch (err) {
     return errorHandler(err);
   }

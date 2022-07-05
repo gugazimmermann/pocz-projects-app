@@ -217,7 +217,11 @@ export function Members({ profile }: MembersProps) {
       backRoute={`${AppRoutes.Members}${CommonRoutes.LIST}`}
       addRoute={`${AppRoutes.Members}${CommonRoutes.CREATE}`}
       reload={reloadList}
-      isProfessional={profile?.isProfessional && profile.isAdmin}
+      disabled={
+        !profile?.isAdmin
+        || (!profile?.isProfessional
+          && (showDataList.length >= 1 || dataListInvite.length >= 1))
+      }
     />
   );
 
@@ -239,12 +243,15 @@ export function Members({ profile }: MembersProps) {
           {whatToShow === 'list' && (
             <>
               <List dataList={showDataList} sort={sort} setSort={setSort} />
-              <ListInvites
-                dataList={dataListInvite}
-                setSelected={setSelectedInvite}
-                setSendConfirm={setSendInviteConfirm}
-                setDeleteConfirm={setDeleteInviteConfirm}
-              />
+              {(profile?.isProfessional
+                || (!profile?.isProfessional && showDataList.length === 0)) && (
+                <ListInvites
+                  dataList={dataListInvite}
+                  setSelected={setSelectedInvite}
+                  setSendConfirm={setSendInviteConfirm}
+                  setDeleteConfirm={setDeleteInviteConfirm}
+                />
+              )}
             </>
           )}
           {whatToShow === 'create' && (
@@ -270,8 +277,13 @@ export function Members({ profile }: MembersProps) {
               action={handleDeleteInvite}
             />
           )}
-          {!profile?.isProfessional && (
-            <BasicPlanMsg message={Lang.Places.BasicPlan} />
+          {!profile?.isProfessional
+            && profile?.isAdmin
+            && (showDataList.length >= 1 || dataListInvite.length >= 1) && (
+              <BasicPlanMsg
+                message={Lang.Members.BasicPlan}
+                isAdmin={!!profile?.isAdmin}
+              />
           )}
         </div>
       </div>

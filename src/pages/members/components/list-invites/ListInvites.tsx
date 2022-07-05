@@ -35,20 +35,12 @@ export function ListInvites({
                   {data.name}
                 </td>
                 <td className="py-3 px-3 text-left hidden sm:table-cell">
-                  {data.email ? (
-                    <a href={`mailto:${data.email}`} className="underline">
-                      {data.email}
-                    </a>
-                  ) : (
-                    <span>{data.email}</span>
-                  )}
+                  <span className="font-bold">{data.email}</span>
                 </td>
                 <td className="py-3 px-3 text-left whitespace-nowrap">
-                  Enviado em
-                  {' '}
-                  {DateTime.fromISO(
+                  {`Enviado em ${DateTime.fromISO(
                     data.updatedAt?.toString() as string,
-                  ).toFormat('dd/MM/yy HH:mm')}
+                  ).toFormat('dd/MM/yy HH:mm')}`}
                 </td>
                 <td className="py-3 px-3">
                   <div className="flex items-end justify-end">

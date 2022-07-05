@@ -73,7 +73,10 @@ export function Places({ profile, setPlaces }: PlacesProps) {
       if (setPlaces) setPlaces(data.length);
       if (!profile?.isAdmin) data = data.filter((d) => d.active);
       setDataList(data);
-      const sortedData = Sort(data.slice(0), { sort: sort.type, field: sort.field });
+      const sortedData = Sort(data.slice(0), {
+        sort: sort.type,
+        field: sort.field,
+      });
       setShowDataList(sortedData);
       setLoading(false);
     } catch (err: any) {
@@ -184,7 +187,10 @@ export function Places({ profile, setPlaces }: PlacesProps) {
   };
 
   useEffect(() => {
-    const sortedData = Sort(dataList.slice(0), { sort: sort.type, field: sort.field });
+    const sortedData = Sort(dataList.slice(0), {
+      sort: sort.type,
+      field: sort.field,
+    });
     setShowDataList(sortedData);
   }, [sort]);
 
@@ -208,7 +214,7 @@ export function Places({ profile, setPlaces }: PlacesProps) {
       backRoute={`${AppRoutes.Places}${CommonRoutes.LIST}`}
       addRoute={`${AppRoutes.Places}${CommonRoutes.CREATE}`}
       reload={reloadList}
-      isProfessional={profile?.isProfessional && profile.isAdmin}
+      disabled={!profile?.isProfessional && showDataList.length >= 1}
     />
   );
 
@@ -259,8 +265,8 @@ export function Places({ profile, setPlaces }: PlacesProps) {
               action={handleDelete}
             />
           )}
-          {!profile?.isProfessional && (
-            <BasicPlanMsg message={Lang.Places.BasicPlan} />
+          {!profile?.isProfessional && showDataList.length >= 1 && (
+            <BasicPlanMsg message={Lang.Places.BasicPlan} isAdmin={!!profile?.isAdmin} />
           )}
         </div>
       </div>

@@ -9,7 +9,6 @@ import {
   Header,
 } from '@components';
 import {
-  IProfiles,
   IPlaces,
   IPersonsTypes,
   IPersons,
@@ -28,11 +27,7 @@ import {
 } from '@services';
 import { List, Details, Form } from './components';
 
-interface PersonsProps {
-  profile?: IProfiles;
-}
-
-export function Persons({ profile }: PersonsProps) {
+export function Persons() {
   const history = useHistory();
   const { pathname } = useLocation();
   let { id } = useParams<{ id: string }>();
@@ -292,7 +287,6 @@ export function Persons({ profile }: PersonsProps) {
       backRoute={`${AppRoutes.Persons}/${type}${CommonRoutes.LIST}`}
       addRoute={`${AppRoutes.Persons}/${type}${CommonRoutes.CREATE}`}
       reload={reloadList}
-      isProfessional={profile?.isProfessional && profile.isAdmin}
     />
   );
 
@@ -380,9 +374,6 @@ export function Persons({ profile }: PersonsProps) {
               action={handleDelete}
             />
           )}
-          {/* {!profile?.isProfessional && (
-            <BasicPlanMsg message={Lang.Places.BasicPlan} />
-          )} */}
         </div>
       </div>
     </div>

@@ -76,13 +76,7 @@ export function List({ dataList, sort, setSort }: ListProps) {
                 </td>
                 <td className="text-left hidden sm:table-cell">
                   <div className="flex items-center">
-                    {data.email ? (
-                      <a href={`mailto:${data.email}`} className="underline">
-                        {data.email}
-                      </a>
-                    ) : (
-                      <span>{data.email}</span>
-                    )}
+                    <span className="font-bold">{data.email}</span>
                   </div>
                 </td>
                 <td className="text-center hidden sm:table-cell">

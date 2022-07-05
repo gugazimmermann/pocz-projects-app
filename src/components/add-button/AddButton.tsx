@@ -6,7 +6,7 @@ export interface AddButtonProps {
   backRoute: string | undefined;
   addRoute: string | undefined;
   reload(): void;
-  isProfessional?: boolean;
+  disabled?: boolean;
 }
 
 export function AddButton({
@@ -14,7 +14,7 @@ export function AddButton({
   backRoute,
   addRoute,
   reload,
-  isProfessional,
+  disabled,
 }: AddButtonProps) {
   const history = useHistory();
 
@@ -35,11 +35,11 @@ export function AddButton({
       className={`px-4 py-2 text-sm text-white rounded-md ${
         back
           ? 'bg-secondary-500 hover:bg-secondary-700 '
-          : isProfessional
+          : !disabled
             ? 'bg-primary-500 hover:bg-primary-900 focus:ring-primary-500'
             : 'bg-gray-300 '
       }`}
-      disabled={!isProfessional}
+      disabled={!back && disabled}
     >
       {back ? 'Listagem' : 'Adicionar'}
     </button>
