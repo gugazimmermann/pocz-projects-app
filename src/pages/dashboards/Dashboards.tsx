@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Header } from '@components';
