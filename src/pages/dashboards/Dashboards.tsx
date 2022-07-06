@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Header } from '@components';
@@ -20,7 +19,7 @@ export default function Dashboards() {
       const place = (await PlacesServices.getOne({ id: placeid })) as IPlaces;
       setSelectedPlace(place);
     } catch (err) {
-      console.log(err);
+      console.debug(err);
     }
   }
 
@@ -31,7 +30,7 @@ export default function Dashboards() {
       setPlaces(data);
       setSelectedPlace({} as IPlaces);
     } catch (err) {
-      console.log(err);
+      console.debug(err);
     }
   }
 
@@ -71,7 +70,7 @@ export default function Dashboards() {
   return (places && places?.length > 0) || selectedPlace ? (
     <div className="mb-10 container mx-auto">
       <Header
-        before={['Dashboards']}
+        before={[Lang.Layout.Dashboards]}
         main={selectedPlace.name ? `${selectedPlace.name}` : PLACES.PLURAL}
         select={places && places.length > 1 ? selectPlaces : undefined}
       />

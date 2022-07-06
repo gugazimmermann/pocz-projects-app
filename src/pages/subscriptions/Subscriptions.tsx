@@ -75,6 +75,7 @@ export function Subscriptions() {
       });
       if (!currentMonth) {
         dataPayment.unshift({
+          currency: dataSubscription.currency,
           transactionAmount: dataSubscription.transactionAmount,
           status: 'Pending',
           paidDate: DateTime.now().toISO(),
@@ -92,7 +93,6 @@ export function Subscriptions() {
         return c;
       });
       setCreditCards(dataCreditCards);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setShowAlert({
         show: true,
@@ -106,7 +106,6 @@ export function Subscriptions() {
   useEffect(() => {
     populateData();
     setList(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

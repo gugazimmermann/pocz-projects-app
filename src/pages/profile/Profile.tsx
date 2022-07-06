@@ -240,7 +240,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('name')}
                       id="name"
                       type="text"
-                      placeholder="Nome"
+                      placeholder={Lang.Profile.Name}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.name
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -258,7 +258,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('email')}
                       id="email"
                       type="email"
-                      placeholder="Email"
+                      placeholder={Lang.Profile.Email}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.email
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -281,7 +281,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                           format="(##) #####-####"
                           id="phone"
                           type="text"
-                          placeholder="Telefone"
+                          placeholder={Lang.Profile.Phone}
                           onValueChange={(c) => field.onChange(c.value)}
                           className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                             errors.phone
@@ -307,7 +307,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                           format="##.###-###"
                           id="zip"
                           type="text"
-                          placeholder="CEP"
+                          placeholder={Lang.Profile.ZipCode}
                           onValueChange={(c) => {
                             field.onChange(c.value);
                             fetchCEP(c.value);
@@ -331,7 +331,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('address')}
                       id="address"
                       type="text"
-                      placeholder="Endereço"
+                      placeholder={Lang.Profile.Address}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.address
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -347,7 +347,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('number')}
                       id="number"
                       type="text"
-                      placeholder="Nº"
+                      placeholder={Lang.Profile.Number}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.number
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -363,7 +363,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('complement')}
                       id="complement"
                       type="text"
-                      placeholder="Complemento"
+                      placeholder={Lang.Profile.Complement}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.complement
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -381,7 +381,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('neighborhood')}
                       id="neighborhood"
                       type="text"
-                      placeholder="Bairro"
+                      placeholder={Lang.Profile.Neighborhood}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.neighborhood
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -399,7 +399,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                       {...register('city')}
                       id="city"
                       type="text"
-                      placeholder="Cidade"
+                      placeholder={Lang.Profile.City}
                       className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                         errors.city
                           ? 'focus:ring-red-500/75 border-red-500'
@@ -467,7 +467,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                         />
                         <UploadCloudIcon styles="w-8 h-8" />
                         <span className="mt-2 text-base leading-normal">
-                          Foto
+                          {Lang.Profile.Avatar}
                         </span>
                         <input
                           {...avatarRegister}

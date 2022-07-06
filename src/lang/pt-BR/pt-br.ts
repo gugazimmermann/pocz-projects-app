@@ -120,6 +120,7 @@ const Auth = {
 };
 
 const Layout = {
+  Dashboards: 'Dashboards',
   All: 'Todos',
   Today: 'Hoje',
   In: 'em',
@@ -170,6 +171,7 @@ const Profile = {
   Neighborhood: 'Bairro',
   City: 'Cidade',
   State: 'UF',
+  Avatar: 'Foto',
   Submit: `Alterar ${PROFILE.SINGLE}`,
 };
 

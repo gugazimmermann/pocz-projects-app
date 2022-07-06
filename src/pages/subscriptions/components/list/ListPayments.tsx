@@ -53,7 +53,7 @@ export function ListPayments({ payments }: ListPaymentsProps) {
                   <span>
                     {payment?.transactionAmount.toLocaleString(Lang.CountryCode, {
                       style: 'currency',
-                      currency: 'brl',
+                      currency: payment?.currency || 'brl',
                     })}
                   </span>
                 </td>

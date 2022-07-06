@@ -5,6 +5,7 @@ export interface ISubscriptions {
   reason: string;
   frequency: number;
   frequencyType: string;
+  currency: string;
   transactionAmount: number;
   status: boolean;
   type?: string;
@@ -34,6 +35,7 @@ export interface IPlans {
 export interface IPayments {
   id?: string;
   userId?: string;
+  currency: string;
   transactionAmount: number;
   status: string;
   paidDate: string;
