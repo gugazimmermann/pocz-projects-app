@@ -25,8 +25,23 @@ export interface MembersCreateInviteReq {
 
 export async function getAll(): Promise<IMembersSimple[] | Error> {
   try {
+    const me = await api.get('/profile');
+    const res: IMembersSimple[] = [
+      {
+        active: true,
+        avatar: me.data.body.avatar,
+        email: me.data.body.email,
+        id: me.data.body.id,
+        name: me.data.body.name,
+        phone: me.data.body.phone,
+        role: me.data.body.isAdmin ? 'Admin' : 'User',
+      },
+    ];
     const { data } = await api.get('/members');
-    return data.body;
+    data.body.forEach((u: IMembersSimple) => {
+      res.push(u);
+    });
+    return res;
   } catch (err) {
     return errorHandler(err);
   }
