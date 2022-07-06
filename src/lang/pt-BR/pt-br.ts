@@ -52,6 +52,7 @@ const Auth = {
   },
   ChangePassword: {
     Route: 'mudar-senha',
+    Title: 'Mudar Senha',
     NoCodeError: 'Não foi possível recuperar o código, verifique seu email.',
     SeeEmail: 'Veja o email * e preencha o código.',
     SeeValidate: 'Válido até às * de',
@@ -60,6 +61,7 @@ const Auth = {
     NewPassword: 'Nova Senha',
     RepeatNewPassword: 'Repita Nova Senha',
     ChangePassword: 'Alterar Senha',
+    Back: 'Voltar para Entrar',
   },
   SignUp: {
     Route: 'registar',
@@ -76,6 +78,7 @@ const Auth = {
   },
   Plans: {
     Route: 'planos',
+    Title: 'Selecione seu Plano',
     ChangeProfissional:
       'O plano pode ser alterado posteriormente para Profissional.',
     ChangeBasicOrProfissional:
@@ -106,6 +109,13 @@ const Auth = {
   },
   Invite: {
     Route: 'convite',
+    NoCode: 'Não foi possível recuperar o código, verifique seu email.',
+    DifferentPassword: 'Senhas são diferentes!',
+    Title: 'Convite',
+    Code: 'Código',
+    NewPassword: 'Cadastre sua Senha',
+    RepeatNewPassword: 'Repita a Senha',
+    AcceptInvite: 'Aceitar Convite',
   },
 };
 

@@ -133,7 +133,6 @@ export function Subscription() {
       });
       setLoading(false);
       history.push(AuthRoutes.SignIn, { email: form.email });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setShowAlert({
         show: true,

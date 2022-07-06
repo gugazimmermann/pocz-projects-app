@@ -7,6 +7,7 @@ import { WARNING_TYPES } from '@libs';
 import { MembersServices } from '@services';
 import { IMembers } from '@interfaces';
 import { AuthRoutes } from '@routes';
+import { Lang } from '@lang';
 import { Title } from '../../components';
 
 type Form = {
@@ -52,7 +53,7 @@ export default function Invite() {
     } catch (err: any) {
       setShowAlert({
         show: true,
-        message: 'Não foi possível recuperar o código, verifique seu email.',
+        message: Lang.Auth.Invite.NoCode,
         type: WARNING_TYPES.ERROR,
         time: 3000,
       });
@@ -77,7 +78,7 @@ export default function Invite() {
     if (form.newpassword !== form.repeatnewpassword) {
       setShowAlert({
         show: true,
-        message: 'Senhas são diferentes!',
+        message: Lang.Auth.Invite.DifferentPassword,
         type: WARNING_TYPES.ERROR,
         time: 3000,
       });
@@ -108,7 +109,7 @@ export default function Invite() {
 
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
-      <Title title="Convite" />
+      <Title title={Lang.Auth.Invite.Title} />
       {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section className="mt-5">
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -117,7 +118,7 @@ export default function Invite() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="code"
             >
-              Código
+              {Lang.Auth.Invite.Code}
             </label>
             <input
               type="text"
@@ -135,7 +136,7 @@ export default function Invite() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="newpassword"
             >
-              Cadastre sua Senha
+              {Lang.Auth.Invite.NewPassword}
             </label>
             <input
               type="password"
@@ -154,7 +155,7 @@ export default function Invite() {
               className="block text-gray-700 text-sm font-bold mb-1 ml-2"
               htmlFor="repeatnewpassword"
             >
-              Repita a Senha
+              {Lang.Auth.Invite.RepeatNewPassword}
             </label>
             <input
               type="password"
@@ -171,7 +172,7 @@ export default function Invite() {
           <LoadingButton
             styles="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
             type="submit"
-            text="Aceitar Convite"
+            text={Lang.Auth.Invite.AcceptInvite}
             loading={loading}
           />
         </form>

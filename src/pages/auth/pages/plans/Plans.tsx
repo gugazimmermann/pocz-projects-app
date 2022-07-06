@@ -57,30 +57,31 @@ export function Plans() {
   }
 
   function planIcon(p: IPlans | undefined) {
-    if (
-      (p?.reason as string).toLowerCase().includes('profissional')
-      || (p?.reason as string).toLowerCase().includes('gratuito')
-    ) {
+    if (p?.type === 'professional') {
       return <PlanProfessionalIcon styles="w-12 h-12 text-primary-700" />;
     }
     return <PlanBasicIcon styles="w-12 h-12 text-primary-700" />;
   }
 
   function planFeatures(p: IPlans | undefined) {
-    if (
-      (p?.reason as string).toLowerCase().includes('profissional')
-      || (p?.reason as string).toLowerCase().includes('gratuito')
-    ) {
-      return <ProfessionalFeatures />;
-    }
+    if (p?.type === 'professional') return <ProfessionalFeatures />;
     return <BasicFeatures />;
   }
 
   function planMsg(p: IPlans | undefined) {
-    if (
-      !(p?.reason as string).toLowerCase().includes('profissional')
-      && !(p?.reason as string).toLowerCase().includes('gratuito')
-    ) {
+    if (p?.transactionAmount === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="mt-4 text-sm font-bold text-red-600">
+            {Lang.Auth.Plans.FreeTrial}
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            {Lang.Auth.Plans.ChangeBasicOrProfissional}
+          </p>
+        </div>
+      );
+    }
+    if (p?.type !== 'professional') {
       return (
         <div className="flex flex-col items-center justify-center text-center">
           <p className="mt-4 text-sm text-gray-600">
@@ -89,16 +90,7 @@ export function Plans() {
         </div>
       );
     }
-    return (
-      <div className="flex flex-col items-center justify-center text-center">
-        <p className="mt-4 text-sm font-bold text-red-600">
-          {Lang.Auth.Plans.FreeTrial}
-        </p>
-        <p className="mt-2 text-sm text-gray-600">
-          {Lang.Auth.Plans.ChangeBasicOrProfissional}
-        </p>
-      </div>
-    );
+    return <></>;
   }
 
   async function handleFoward() {
@@ -120,7 +112,7 @@ export function Plans() {
   }
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
-      <Title title="Selecione seu Plano" />
+      <Title title={Lang.Auth.Plans.Title} />
       {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section>
         <form className="flex flex-col">

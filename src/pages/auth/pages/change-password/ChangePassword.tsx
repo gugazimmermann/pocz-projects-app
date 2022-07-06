@@ -138,7 +138,7 @@ export function ChangePassword() {
 
   return (
     <main className="bg-white max-w-lg mx-auto p-4 md:p-6 my-10 rounded-lg shadow-2xl">
-      <Title title="Mudar Senha" />
+      <Title title={Lang.Auth.ChangePassword.Title} />
       {state?.email && showInfo(state)}
       {showAlert.show && <Alert alert={showAlert} setAlert={setShowAlert} />}
       <section className="mt-5">
@@ -196,7 +196,7 @@ export function ChangePassword() {
               }`}
             />
           </div>
-          <AuthLink link={AuthRoutes.SignIn} text="Voltar para Entrar" />
+          <AuthLink link={AuthRoutes.SignIn} text={Lang.Auth.ChangePassword.Back} />
           <LoadingButton
             styles="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
             type="submit"
