@@ -123,7 +123,7 @@ export function Form({
               {...register('name')}
               id="name"
               type="text"
-              placeholder="Nome"
+              placeholder={Lang.Places.Form.Name}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.name
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -139,7 +139,7 @@ export function Form({
               {...register('email')}
               id="email"
               type="email"
-              placeholder="Email"
+              placeholder={Lang.Places.Form.Email}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.email
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -160,7 +160,7 @@ export function Form({
                   format="(##) #####-####"
                   id="phone"
                   type="text"
-                  placeholder="Telefone"
+                  placeholder={Lang.Places.Form.Phone}
                   onValueChange={(c) => {
                     field.onChange(c.value);
                   }}
@@ -186,7 +186,7 @@ export function Form({
                   format="##.###-###"
                   id="zip"
                   type="text"
-                  placeholder="CEP"
+                  placeholder={Lang.Places.Form.ZipCode}
                   onValueChange={(c) => {
                     field.onChange(c.value);
                     fetchCEP(c.value);
@@ -208,7 +208,7 @@ export function Form({
               {...register('address')}
               id="address"
               type="text"
-              placeholder="Endereço"
+              placeholder={Lang.Places.Form.Address}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.address
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -224,7 +224,7 @@ export function Form({
               {...register('number')}
               id="number"
               type="text"
-              placeholder="Nº"
+              placeholder={Lang.Places.Form.Number}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.number
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -240,7 +240,7 @@ export function Form({
               {...register('complement')}
               id="complement"
               type="text"
-              placeholder="Complemento"
+              placeholder={Lang.Places.Form.Complement}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.complement
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -256,7 +256,7 @@ export function Form({
               {...register('neighborhood')}
               id="neighborhood"
               type="text"
-              placeholder="Bairro"
+              placeholder={Lang.Places.Form.Neighborhood}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.neighborhood
                   ? 'focus:ring-red-500/75 border-red-500'
@@ -272,7 +272,7 @@ export function Form({
               {...register('city')}
               id="city"
               type="text"
-              placeholder="Cidade"
+              placeholder={Lang.Places.Form.City}
               className={`w-full rounded-md focus:ring-0 text-gray-900 ${
                 errors.city
                   ? 'focus:ring-red-500/75 border-red-500'

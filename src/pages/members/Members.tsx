@@ -75,7 +75,7 @@ export function Members({ profile }: MembersProps) {
   async function getDataList() {
     setLoading(true);
     try {
-      const data = (await MembersServices.getAll()) as IMembersSimple[];
+      let data = (await MembersServices.getAll()) as IMembersSimple[];
       setDataList(data);
       const sortedData = Sort(data.slice(0), {
         sort: sort.type,
@@ -220,7 +220,7 @@ export function Members({ profile }: MembersProps) {
       disabled={
         !profile?.isAdmin
         || (!profile?.isProfessional
-          && (showDataList.length >= 1 || dataListInvite.length >= 1))
+          && (showDataList.length > 1 || dataListInvite.length >= 1))
       }
     />
   );
@@ -243,15 +243,12 @@ export function Members({ profile }: MembersProps) {
           {whatToShow === 'list' && (
             <>
               <List dataList={showDataList} sort={sort} setSort={setSort} />
-              {(profile?.isProfessional
-                || (!profile?.isProfessional && showDataList.length === 0)) && (
-                <ListInvites
-                  dataList={dataListInvite}
-                  setSelected={setSelectedInvite}
-                  setSendConfirm={setSendInviteConfirm}
-                  setDeleteConfirm={setDeleteInviteConfirm}
-                />
-              )}
+              <ListInvites
+                dataList={dataListInvite}
+                setSelected={setSelectedInvite}
+                setSendConfirm={setSendInviteConfirm}
+                setDeleteConfirm={setDeleteInviteConfirm}
+              />
             </>
           )}
           {whatToShow === 'create' && (
@@ -279,7 +276,7 @@ export function Members({ profile }: MembersProps) {
           )}
           {!profile?.isProfessional
             && profile?.isAdmin
-            && (showDataList.length >= 1 || dataListInvite.length >= 1) && (
+            && (showDataList.length > 1 || dataListInvite.length >= 1) && (
               <BasicPlanMsg
                 message={Lang.Members.BasicPlan}
                 isAdmin={!!profile?.isAdmin}

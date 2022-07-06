@@ -212,7 +212,7 @@ const Places = {
       Employees: 'Colaboradores',
       Status: 'Status',
     },
-    NoData: `Nenhum ${PLACES.PLURAL} Cadastrado`,
+    NoData: `Nenhum ${PLACES.SINGLE} Cadastrado`,
     Add: `${PLACES.SINGLE} cadastrado com sucesso!`,
   },
   Form: {
